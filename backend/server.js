@@ -1,41 +1,38 @@
 const express = require('express');
 const mysql = require('mysql');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const connection = require('./connection/db'); // Using your existing DB connection file
+
 const app = express();
 const PORT = 5000;
-const connection = require('./connection/db');
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve files from the 'documents' and 'uploads' folders
 app.use('/documents', express.static(path.join(__dirname, 'documents')));
-const express = require('express');
-const path = require('path');
-
-
-// Serve files from the 'uploads' folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
 // Define the path for the 'uploads' folder
-const uploadFolder = path.join(__dirname, 'uploads/');
+const uploadFolder = path.join(__dirname, 'uploads');
 
-// Setup file storage
+// Setup file storage for multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadFolder); // Use the dynamic path for the uploads folder
+    cb(null, uploadFolder);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// POST route to add event
+// POST route to add an event
 app.post('/api/events', upload.fields([{ name: 'document' }, { name: 'poster' }]), (req, res) => {
   const { venue, name, organization, date, duration } = req.body;
   const document = req.files.document ? req.files.document[0].filename : null;
@@ -47,7 +44,7 @@ app.post('/api/events', upload.fields([{ name: 'document' }, { name: 'poster' }]
       console.error('Error inserting data:', err);
       return res.status(500).json({ message: 'Error inserting event data' });
     }
-    res.status(200).json({ message: 'Event added successfully', event: results });
+    res.status(200).json({ message: 'Event added successfully', eventId: results.insertId });
   });
 });
 
@@ -59,69 +56,51 @@ app.get('/api/events', (req, res) => {
       console.error('Error fetching events:', err);
       return res.status(500).json({ message: 'Error fetching event data' });
     }
-    res.status(200).json(results); // Send the list of events as the response
+    res.status(200).json(results);
   });
 });
 
-// Serve static files from the 'uploads' folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Middleware
-app.use(bodyParser.json());
-
-// Database connection
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root', // Replace with your actual username
-  password: '', // Replace with your actual password
-  database: 'school_event_management', // Replace with your actual database name
-});
-
-db.connect(err => {
-  if (err) throw err;
-  console.log('Connected to database');
-});
-
-// Login route
+// Login route for users
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+  const query = 'SELECT * FROM users WHERE username = ?';
 
-  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+  connection.query(query, [username], (err, results) => {
     if (err) {
+      console.error('Database error:', err);
       return res.status(500).json({ success: false, message: 'Database error' });
     }
-    if (results.length > 0) {
-      const user = results[0];
-      if (user.password === password) {
-        return res.json({ success: true });
-      } else {
-        return res.status(401).json({ success: false, message: 'Invalid username or password' });
-      }
-    } else {
-      return res.status(401).json({ success: false, message: 'Invalid username or password' });
+    if (results.length > 0 && results[0].password === password) {
+      return res.json({ success: true, message: 'Login successful' });
     }
+    res.status(401).json({ success: false, message: 'Invalid username or password' });
   });
 });
 
-// Admin login route
+// Login route for admin
 app.post('/adminlogin', (req, res) => {
   const { username, password } = req.body;
+  const query = 'SELECT * FROM admin WHERE adminusername = ?';
 
-  db.query('SELECT * FROM admin WHERE adminusername = ?', [username], (err, results) => {
+  connection.query(query, [username], (err, results) => {
     if (err) {
+      console.error('Database error:', err);
       return res.status(500).json({ success: false, message: 'Database error' });
     }
-    if (results.length > 0) {
-      const admin = results[0];
-      if (admin.adminpassword === password) {
-        return res.json({ success: true });
-      } else {
-        return res.status(401).json({ success: false, message: 'Invalid admin username or password' });
-      }
-    } else {
-      return res.status(401).json({ success: false, message: 'Invalid admin username or password' });
+    if (results.length > 0 && results[0].adminpassword === password) {
+      return res.json({ success: true, message: 'Admin login successful' });
     }
+    res.status(401).json({ success: false, message: 'Invalid admin username or password' });
   });
+});
+
+// Check database connection
+connection.connect(err => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    process.exit(1);
+  }
+  console.log('Connected to the database');
 });
 
 // Start server
