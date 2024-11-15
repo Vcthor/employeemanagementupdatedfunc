@@ -27,4 +27,31 @@ router.get('/events', (req, res) => {
   });
 });
 
+// Get all councils
+router.get('/councils', (req, res) => {
+  const query = 'SELECT * FROM councils';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching councils:', err);
+      return res.status(500).json({ message: 'Server Error' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+// Get all users
+router.get('/users', (req, res) => {
+  const sqlQuery = 'SELECT * FROM users';
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      console.error('Error fetching users:', err);
+      return res.status(500).send('Server Error');
+    }
+    res.json(results);
+  });
+});
+
+
+
+
 module.exports = router;

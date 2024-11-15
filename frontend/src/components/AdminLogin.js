@@ -8,6 +8,7 @@ const AdminLogin = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    // Function to handle login
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -28,6 +29,11 @@ const AdminLogin = () => {
             console.error('Error during login:', error);
             setErrorMessage('Login failed. Please try again.');
         }
+    };
+
+    // Function to handle Sign Up button click
+    const handleSignUpClick = () => {
+        navigate('/signup'); // Navigate to the Signup page
     };
 
     return (
@@ -53,7 +59,13 @@ const AdminLogin = () => {
                     />
                     <div style={styles.buttonContainer}>
                         <button type="submit" style={styles.button}>Login</button>
-                        <button type="button" style={styles.button} onClick={() => navigate('/signup')}>Sign Up</button>
+                        <button
+                            type="button"
+                            style={styles.button}
+                            onClick={handleSignUpClick}
+                        >
+                            Sign Up
+                        </button>
                     </div>
                     {errorMessage && <p style={styles.error}>{errorMessage}</p>}
                 </form>

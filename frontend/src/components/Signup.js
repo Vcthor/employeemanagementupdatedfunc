@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
 
 const Signup = () => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +23,7 @@ const Signup = () => {
                 email,
                 username,
                 password,
+                name,
             });
             console.log(response.data);
             // Optionally redirect after signup
@@ -37,6 +39,14 @@ const Signup = () => {
             <div style={styles.formContainer}>
                 <h2 style={styles.title}>Sign Up</h2>
                 <form onSubmit={handleSignup} style={styles.form}>
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={name} // Corrected to `name`
+                        onChange={(e) => setName(e.target.value)}
+                        style={styles.input}
+                        required
+                    />
                     <input
                         type="email"
                         placeholder="Email"
@@ -75,7 +85,7 @@ const Signup = () => {
             <button style={styles.backButton} onClick={() => navigate('/login')}>Back to Login</button>
         </div>
     );
-}
+};
 
 // Inline styles for the Signup component
 const styles = {

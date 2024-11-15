@@ -11,14 +11,14 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Make a POST request to your login endpoint
+            // Make a POST request to the user login endpoint
             const response = await axios.post('http://localhost:5000/login', {
                 username,
                 password,
             });
 
             if (response.data.success) {
-                // If login is successful, redirect to the dashboard
+                // If login is successful, redirect to Dashboard
                 navigate('/dashboard');
             } else {
                 // Display an error message if login failed
@@ -26,7 +26,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Error during login:', error);
-            setErrorMessage('Login failed. Please try again.'); // Show error message
+            setErrorMessage('Login failed. Please try again.');
         }
     };
 

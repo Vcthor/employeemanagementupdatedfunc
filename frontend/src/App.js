@@ -9,12 +9,18 @@ const App = () => {
     return (
         <Router>
             <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<PublicPage />} />
                 <Route path="/login" element={<Login />} />
-               
+                <Route path="/signup" element={<Signup />} />
+
+                {/* Admin Routes */}
                 <Route path="/adminlogin" element={<AdminLogin />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/" element={<PublicPage />} /> {/* Make sure PublicPage is accessible */}
-                <Route path="/dashboard" element={<Dashboard />} /> {/* Add Dashboard route */}
+
+                {/* Protected Route Example */}
+                <Route path="/dashboard" element={<Dashboard />} />
+                
             </Routes>
         </Router>
     );
