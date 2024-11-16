@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 import axios from 'axios'; // Import Axios
+import styles from './Login.module.css';
+import logo from '../assets/urslogo.png'
+import back from '../assets/close-outline.svg'
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -31,110 +35,46 @@ const Login = () => {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.formContainer}>
-                <h2 style={styles.title}>LOGIN</h2>
-                <form onSubmit={handleLogin}>
+        <div className={styles.container}>
+            <div className={styles.formContainer}>
+                <img className={styles.backButton} src={back} onClick={() => navigate('/')}/>
+                <img src={logo} className={styles.logo}/>
+                <h2 className={styles.title}>Welcome Back</h2>
+                <p className={styles.subtext}>Please enter your details to sign in</p>
+                <form onSubmit={handleLogin} className={styles.form}>
+                    <p className={styles.label}>Your Username</p>
                     <input
                         type="text"
                         placeholder="Username"
-                        style={styles.input}
+                        className={styles.input}
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
+                    <p className={styles.label}>Password</p>
                     <input
                         type="password"
                         placeholder="Password"
-                        style={styles.input}
+                        className={styles.input}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <div style={styles.buttonContainer}>
-                        <button type="submit" style={styles.button}>Login</button>
-                        <button
-                            type="button"
-                            style={styles.button}
-                            onClick={() => navigate('/adminlogin')} // Navigate to AdminLogin
-                        >
-                            Admin Login
-                        </button>
-                    </div>
-                    {errorMessage && <p style={styles.error}>{errorMessage}</p>}
+                    <button type="submit" className={styles.button}>Login</button>
+                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
                 </form>
-                <p style={styles.forgotPassword}>Forgot Password?</p>
+                <div className={styles.adminCont}>
+                    <p className={styles.ask}>Are you an admin?</p>
+                    <p
+                        className={styles.admin}
+                        onClick={() => navigate('/adminlogin')} // Navigate to AdminLogin
+                    >
+                        Click Here
+                    </p>
+                </div>
             </div>
-            <button style={styles.backButton} onClick={() => navigate('/')}>Back</button>
         </div>
     );
-};
-
-// Inline styles
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh', // Full viewport height
-        backgroundColor: '#f5f5f5', // Optional background color
-    },
-    title: {
-        marginBottom: '20px',
-        color: '#063970', // Optional title color
-    },
-    formContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-        backgroundColor: '#fff',
-    },
-    input: {
-        width: '250px', // Adjust width as needed
-        padding: '10px',
-        margin: '10px 0',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-    },
-    buttonContainer: {
-        display: 'flex',
-        justifyContent: 'space-between', // Align buttons horizontally
-        width: '100%', // Full width for button alignment
-        marginTop: '10px',
-    },
-    button: {
-        flex: 1, // Allow buttons to grow equally
-        padding: '8px',
-        margin: '0 5px', // Margin between buttons
-        border: 'none',
-        borderRadius: '4px',
-        backgroundColor: '#063970', // Button color
-        color: '#fff',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s',
-    },
-    forgotPassword: {
-        marginTop: '10px',
-        color: '#063970', // Optional color for "Forgot Password?"
-        cursor: 'pointer',
-    },
-    backButton: {
-        marginTop: '10px',
-        backgroundColor: 'transparent',
-        border: '1px solid #063970',
-        color: '#063970',
-        borderRadius: '5px',
-        padding: '5px 10px',
-        cursor: 'pointer',
-    },
-    error: {
-        color: 'red', // Style for error messages
-        marginTop: '10px',
-    },
 };
 
 export default Login;

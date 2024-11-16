@@ -4,6 +4,7 @@ import axios from 'axios';
 import Dashboard from './Dashboard';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import styles from './Admin.module.css';
 
 const Admin = () => {
 
@@ -190,36 +191,36 @@ const Admin = () => {
                 return (
                     <div >
                         <h2>Events</h2>
-                        <div style={styles.addEventButtonContainer}>
-                            <button style={styles.addEventButton} onClick={() => console.log('Add New Event')}>
+                        <div className={styles.addEventButtonContainer}>
+                            <button className={styles.addEventButton} onClick={() => console.log('Add New Event')}>
                                 Add New Event
                             </button>
                         </div>
-                        <table style={styles.table}>
+                        <table className={styles.table}>
     <thead>
-        <tr style={styles.tableHeader}>
-            <th style={styles.tableCell}>Name</th>
-            <th style={styles.tableCell}>Organization</th>
-            <th style={styles.tableCell}>Date</th>
-            <th style={styles.tableCell}>Duration</th>
-            <th style={styles.tableCell}>Documents</th>
-            <th style={styles.tableCell}>Photo</th>
-            <th style={styles.tableCell}>Venue</th>
-            <th style={styles.tableCell}>Actions</th>
+        <tr className={styles.tableHeader}>
+            <th className={styles.tableCell}>Name</th>
+            <th className={styles.tableCell}>Organization</th>
+            <th className={styles.tableCell}>Date</th>
+            <th className={styles.tableCell}>Duration</th>
+            <th className={styles.tableCell}>Documents</th>
+            <th className={styles.tableCell}>Photo</th>
+            <th className={styles.tableCell}>Venue</th>
+            <th className={styles.tableCell}>Actions</th>
         </tr>
     </thead>
     <tbody>
         {events.length > 0 ? (
             events.map((event) => (
-                <tr key={event.id} style={styles.tableRow}>
-                    <td style={styles.tableCell}>{event.name}</td>
-                    <td style={styles.tableCell}>{event.organization}</td>
-                    <td style={styles.tableCell}>{event.date}</td>
-                    <td style={styles.tableCell}>{event.duration}</td>
-                    <td style={styles.tableCell}>
+                <tr key={event.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{event.name}</td>
+                    <td className={styles.tableCell}>{event.organization}</td>
+                    <td className={styles.tableCell}>{event.date}</td>
+                    <td className={styles.tableCell}>{event.duration}</td>
+                    <td className={styles.tableCell}>
                         {event.documents && (
                             <button
-                                style={styles.button}
+                                className={styles.button}
                                 onClick={() => handleViewDocument(event.documents, event.name)}
                                 onMouseEnter={(e) => handleButtonHover(e, true)}
                                 onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -228,10 +229,10 @@ const Admin = () => {
                             </button>
                         )}
                     </td>
-                    <td style={styles.tableCell}>
+                    <td className={styles.tableCell}>
                         {event.photo && (
                             <button
-                                style={styles.button}
+                                className={styles.button}
                                 onClick={() => handleViewImage(event.photo)}
                                 onMouseEnter={(e) => handleButtonHover(e, true)}
                                 onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -240,10 +241,10 @@ const Admin = () => {
                             </button>
                         )}
                     </td>
-                    <td style={styles.tableCell}>{event.venue}</td>
-                    <td style={styles.tableCell}>
+                    <td className={styles.tableCell}>{event.venue}</td>
+                    <td className={styles.tableCell}>
                         <button
-                            style={styles.button}
+                            className={styles.button}
                             onClick={() => handleEdit(event.id)}
                             onMouseEnter={(e) => handleButtonHover(e, true)}
                             onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -251,7 +252,7 @@ const Admin = () => {
                             Edit
                         </button>
                         <button
-                            style={styles.button}
+                            className={styles.button}
                             onClick={() => handleConfirm(event.id)}
                             onMouseEnter={(e) => handleButtonHover(e, true)}
                             onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -259,7 +260,7 @@ const Admin = () => {
                             ✔
                         </button>
                         <button
-                            style={styles.button}
+                            className={styles.button}
                             onClick={() => handleDelete(event.id)}
                             onMouseEnter={(e) => handleButtonHover(e, true)}
                             onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -271,7 +272,7 @@ const Admin = () => {
             ))
         ) : (
             <tr>
-                <td colSpan="8" style={styles.noEvents}>No events available</td>
+                <td colSpan="8" className={styles.noEvents}>No events available</td>
             </tr>
         )}
     </tbody>
@@ -283,156 +284,156 @@ const Admin = () => {
                     return (
                         <div >
                             <h2 >Councils and Organizations</h2>
-                            <div style={styles.addCouncilButtonContainer}>
-                                <button style={styles.addCouncilButton} onClick={() => setShowAddCouncilForm(true)}>
+                            <div className={styles.addCouncilButtonContainer}>
+                                <button className={styles.addCouncilButton} onClick={() => setShowAddCouncilForm(true)}>
                                     Add New Council
                                 </button>
                             </div>
-                            <div style={styles.sectionBox}>
-                            <table style={styles.table}>
+                            <div className={styles.sectionBox}>
+                            <table className={styles.table}>
     <thead>
-        <tr style={styles.tableHeader}>
-            <th style={styles.tableCell}>Organization</th>
-            <th style={styles.tableCell}>Adviser</th>
-            <th style={styles.tableCell}>President</th>
-            <th style={styles.tableCell}>Vise-President</th>
-            <th style={styles.tableCell}>Secretary</th>
-            <th style={styles.tableCell}>Treasurer</th>
-            <th style={styles.tableCell}>Auditor</th>
-            <th style={styles.tableCell}>P.R.O</th>
-            <th style={styles.tableCell}>Representative</th>
+        <tr className={styles.tableHeader}>
+            <th className={styles.tableCell}>Organization</th>
+            <th className={styles.tableCell}>Adviser</th>
+            <th className={styles.tableCell}>President</th>
+            <th className={styles.tableCell}>Vise-President</th>
+            <th className={styles.tableCell}>Secretary</th>
+            <th className={styles.tableCell}>Treasurer</th>
+            <th className={styles.tableCell}>Auditor</th>
+            <th className={styles.tableCell}>P.R.O</th>
+            <th className={styles.tableCell}>Representative</th>
             
         </tr>
     </thead>
     <tbody>
         {councils.length > 0 ? (
             councils.map((councils) => (
-                <tr key={councils.id} style={styles.tableRow}>
-                    <td style={styles.tableCell}>{councils.organization}</td>
-                    <td style={styles.tableCell}>{councils.adviser}</td>
-                    <td style={styles.tableCell}>{councils.president}</td>
-                    <td style={styles.tableCell}>{councils.vicePresident}</td>
-                    <td style={styles.tableCell}> {councils.secretary}
+                <tr key={councils.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{councils.organization}</td>
+                    <td className={styles.tableCell}>{councils.adviser}</td>
+                    <td className={styles.tableCell}>{councils.president}</td>
+                    <td className={styles.tableCell}>{councils.vicePresident}</td>
+                    <td className={styles.tableCell}> {councils.secretary}
                      
                     </td>
-                    <td style={styles.tableCell}>{councils.treasurer}
+                    <td className={styles.tableCell}>{councils.treasurer}
                        
                     </td>
-                    <td style={styles.tableCell}>{councils.auditor}</td>
-                    <td style={styles.tableCell}>{councils.pro}
+                    <td className={styles.tableCell}>{councils.auditor}</td>
+                    <td className={styles.tableCell}>{councils.pro}
                        
                     </td>
-                    <td style={styles.tableCell}>{councils.rep} {councils.representative}</td>
+                    <td className={styles.tableCell}>{councils.rep} {councils.representative}</td>
 
                     
                 </tr>
             ))
         ) : (
             <tr>
-                <td colSpan="8" style={styles.noEvents}>No council available</td>
+                <td colSpan="8" className={styles.noEvents}>No council available</td>
             </tr>
         )}
     </tbody>   
 </table>
                             </div>
                             {showAddCouncilForm && (
-                                <form onSubmit={handleAddCouncil} style={styles.sectionBox}>
-                                    <div style={styles.formGroup}>
+                                <form onSubmit={handleAddCouncil} className={styles.sectionBox}>
+                                    <div className={styles.formGroup}>
                                         <label>Organization/Council:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.organization}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, organization: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Adviser:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.adviser}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, adviser: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>President:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.president}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, president: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Vice-President:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.vicePresident}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, vicePresident: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Secretary:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.secretary}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, secretary: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Treasurer:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.treasurer}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, treasurer: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Auditor:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.auditor}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, auditor: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>P.R.O:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.pro}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, pro: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Rep:</label>
                                         <select
                                             value={councilFormData.rep}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, rep: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         >
                                             <option value="">Select Representative</option>
                                             <option value="Rep1">Rep 1</option>
                                             <option value="Rep2">Rep 2</option>
                                         </select>
                                     </div>
-                                    <div style={styles.formGroup}>
+                                    <div className={styles.formGroup}>
                                         <label>Representative:</label>
                                         <input
                                             type="text"
                                             value={councilFormData.representative}
                                             onChange={(e) => setCouncilFormData({ ...councilFormData, representative: e.target.value })}
-                                            style={styles.input}
+                                            className={styles.input}
                                         />
                                     </div>
-                                    <div style={styles.formButtons}>
-                                        <button type="submit" style={styles.submitButton}>Submit</button>
-                                        <button type="button" onClick={() => setShowAddCouncilForm(false)} style={styles.cancelButton}>Cancel</button>
+                                    <div className={styles.formButtons}>
+                                        <button type="submit" className={styles.submitButton}>Submit</button>
+                                        <button type="button" onClick={() => setShowAddCouncilForm(false)} className={styles.cancelButton}>Cancel</button>
                                     </div>
                                 </form>
                             )}
@@ -443,17 +444,17 @@ const Admin = () => {
                     <div >
                         <h2 >Users</h2>
                        
-                        <div style={styles.sectionBox}>
-                        <table style={styles.table}>
+                        <div className={styles.sectionBox}>
+                        <table className={styles.table}>
 
-<table style={styles.table}>
+<table className={styles.table}>
     <thead>
-        <tr style={styles.tableHeader}>
-            <th style={styles.tableCell}>Name</th>
-            <th style={styles.tableCell}>Organization</th>
-            <th style={styles.tableCell}>Username</th>
-            <th style={styles.tableCell}>Password</th>
-            <th style={styles.tableCell}>Email</th>
+        <tr className={styles.tableHeader}>
+            <th className={styles.tableCell}>Name</th>
+            <th className={styles.tableCell}>Organization</th>
+            <th className={styles.tableCell}>Username</th>
+            <th className={styles.tableCell}>Password</th>
+            <th className={styles.tableCell}>Email</th>
             
             
         </tr>
@@ -461,18 +462,18 @@ const Admin = () => {
     <tbody>
         {users.length > 0 ? (
             users.map((users) => (
-                <tr key={users.id} style={styles.tableRow}>
-                    <td style={styles.tableCell}>{users.organization}a</td>
-                    <td style={styles.tableCell}>{users.adviser}a</td>
-                    <td style={styles.tableCell}>{users.president}a</td>
-                    <td style={styles.tableCell}>{users.vicePresident}a</td>
-                    <td style={styles.tableCell}> {users.secretary}a</td>
+                <tr key={users.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{users.organization}a</td>
+                    <td className={styles.tableCell}>{users.adviser}a</td>
+                    <td className={styles.tableCell}>{users.president}a</td>
+                    <td className={styles.tableCell}>{users.vicePresident}a</td>
+                    <td className={styles.tableCell}> {users.secretary}a</td>
                      
                 </tr>
             ))
         ) : (
             <tr>
-                <td colSpan="8" style={styles.noEvents}>No council available</td>
+                <td colSpan="8" className={styles.noEvents}>No council available</td>
             </tr>
         )}
     </tbody>   
@@ -483,9 +484,9 @@ const Admin = () => {
                     </div>
                 );
             case 'Reports':
-                return <div style={styles.sectionBox}>This is the Reports section</div>;
+                return <div className={styles.sectionBox}>This is the Reports section</div>;
             default:
-                return <div style={styles.sectionBox}>This is the Dashboard section</div>;
+                return <div className={styles.sectionBox}>This is the Dashboard section</div>;
         }
     };
 
@@ -494,22 +495,22 @@ const Admin = () => {
     return (
 
         
-        <div style={styles.container}>
+        <div className={styles.container}>
             {/* Navbar */}
-            <nav style={styles.navbar}>
-                <h1 style={styles.navTitle}>Admin Panel</h1>
-                <button style={styles.logoutButton} onClick={handleLogout}>
+            <nav className={styles.navbar}>
+                <h1 className={styles.navTitle}>Admin Panel</h1>
+                <button className={styles.logoutButton} onClick={handleLogout}>
                     Logout
                 </button>
             </nav>
 
             {/* Sidebar and main content */}
-            <div style={styles.main}>
+            <div className={styles.main}>
                 {/* Sidebar */}
-                <aside style={styles.sidebar}>
-                    <ul style={styles.sidebarList}>
+                <aside className={styles.sidebar}>
+                    <ul className={styles.sidebarList}>
                         <li
-                            style={{
+                            className={{
                                 ...styles.sidebarItem,
                                 ...(activeComponent === 'Dashboard' && styles.activeSidebarItem),
                             }}
@@ -518,7 +519,7 @@ const Admin = () => {
                             Dashboard
                         </li>
                         <li
-                            style={{
+                            className={{
                                 ...styles.sidebarItem,
                                 ...(activeComponent === 'Events' && styles.activeSidebarItem),
                             }}
@@ -527,7 +528,7 @@ const Admin = () => {
                             Events
                         </li>
                         <li
-                            style={{
+                            className={{
                                 ...styles.sidebarItem,
                                 ...(activeComponent === 'Councils' && styles.activeSidebarItem),
                             }}
@@ -536,7 +537,7 @@ const Admin = () => {
                             Councils and Organizations
                         </li>
                         <li
-                            style={{
+                            className={{
                                 ...styles.sidebarItem,
                                 ...(activeComponent === 'Users' && styles.activeSidebarItem),
                             }}
@@ -545,7 +546,7 @@ const Admin = () => {
                             Users
                         </li>
                         <li
-                            style={{
+                            className={{
                                 ...styles.sidebarItem,
                                 ...(activeComponent === 'Reports' && styles.activeSidebarItem),
                             }}
@@ -557,15 +558,15 @@ const Admin = () => {
                 </aside>
 
                 {/* Main Content Area */}
-                <main style={styles.content}>
+                <main className={styles.content}>
                     {renderContent()}
                 </main>
             </div>
 
             {/* Document Modal */}
             {showDocumentModal && (
-                <div style={styles.modalBackdrop} onClick={handleCloseDocumentModal}>
-                    <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.modalBackdrop} onClick={handleCloseDocumentModal}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                         <h3>{selectedDocumentName}</h3> {/* Display the document name */}
                         
                         {selectedDocumentName?.endsWith('.pdf') ? (
@@ -573,10 +574,10 @@ const Admin = () => {
                                 <Viewer fileUrl={selectedDocument} />
                             </Worker>
                         ) : (
-                            <img src={selectedDocument} alt={selectedDocumentName} style={{ width: '100%', height: 'auto' }} />
+                            <img src={selectedDocument} alt={selectedDocumentName} className={{ width: '100%', height: 'auto' }} />
                         )}
 
-                        <button style={styles.closeButton} onClick={handleCloseDocumentModal}>
+                        <button className={styles.closeButton} onClick={handleCloseDocumentModal}>
                             Close
                         </button>
                     </div>
@@ -584,178 +585,6 @@ const Admin = () => {
             )}
         </div>
     );
-};
-
-// Inline styles for the layout
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-    },
-    navbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '10px 20px',
-        backgroundColor: '#0e4296',
-        color: '#fff',
-    },
-    navTitle: {
-        fontSize: '1.5rem',
-    },
-    logoutButton: {
-        padding: '10px 20px',
-        backgroundColor: '#fff',
-        color: '#0e4296',
-        border: 'none',
-        cursor: 'pointer',
-        borderRadius: '5px',
-    },
-    main: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexGrow: 1,
-        padding: '20px',
-        backgroundColor: '#f4f4f9',
-    },
-    sidebar: {
-        width: '200px',
-        backgroundColor: '#0e4296',
-        color: '#fff',
-        padding: '20px',
-    },
-    sidebarList: {
-        listStyle: 'none',
-        padding: '0',
-        margin: '0',
-    },
-    sidebarItem: {
-        padding: '10px 20px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-    },
-    activeSidebarItem: {
-        backgroundColor: '#8ba4cc',
-    },
-    content: {
-        flexGrow: 1,
-        padding: '20px',
-        backgroundColor: '#fff',
-        borderRadius: '8px',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-    },
-    table: {
-        width: '100%',
-        borderCollapse: 'collapse',
-        marginTop: '20px',
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', // Add subtle shadow around the table
-    },
-    tableHeader: {
-        backgroundColor: '#0e4296', // Solid blue header color
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'left',
-        padding: '10px',
-    },
-    tableRow: {
-        '&:nth-child(even)': {
-            backgroundColor: '#e3f2fd', // Light blue for even rows
-        },
-        '&:nth-child(odd)': {
-            backgroundColor: '#bbdefb', // Slightly darker blue for odd rows
-        },
-    },
-    tableCell: {
-        padding: '12px 15px', // Add padding for spacing
-        border: '1px solid #ddd', // Light border for separation
-        textAlign: 'left',
-        fontSize: '14px',
-    },
-    button: {
-        backgroundColor: '#0e4296',
-        color: 'white',
-        padding: '8px 12px',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        margin: '2px 5px',
-        transition: 'background-color 0.3s',
-    },
-    buttonHover: {
-        backgroundColor: '#034d8c', // Darker blue when button is hovered
-    },
-    noEvents: {
-        textAlign: 'center',
-        color: '#888',
-        padding: '20px',
-    },
-
-    
-    sectionBox: {
-        padding: '20px',
-        backgroundColor: '#fff',
-        borderRadius: '8px',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-        marginBottom: '20px',
-    },
-    addEventButtonContainer: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        marginBottom: '20px',
-    },
-    addEventButton: {
-        padding: '10px 20px',
-        backgroundColor: '#0e4296',
-        color: '#fff',
-        border: 'none',
-        cursor: 'pointer',
-        borderRadius: '5px',
-        fontSize: '1rem',
-    },
-    buttonContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    actionButton: {
-        padding: '10px 20px',
-        backgroundColor: '#0e4296',
-        color: '#fff',
-        border: 'none',
-        cursor: 'pointer',
-        borderRadius: '5px',
-        fontSize: '1rem',
-    },
-    modalBackdrop: {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Darker overlay for better focus
-        display: 'grid',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000, // Ensure it appears above other content
-        padding: '20px', // Add padding for responsiveness
-    },
-    modalContent: {
-        backgroundColor: '#fff',
-        padding: '20px',
-        borderRadius: '8px',
-        maxWidth: '80%%',
-        maxHeight: '80%',
-        overflowY: 'auto',
-    },
-    closeButton: {
-        padding: '10px 20px',
-        backgroundColor: '#f44336',
-        color: '#fff',
-        border: 'none',
-        cursor: 'pointer',
-        borderRadius: '5px',
-        marginTop: '10px',
-    },
 };
 
 export default Admin;

@@ -1,0 +1,182 @@
+/* General container styles */
+.container {
+    background-color: #f9f9f9;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #0e4296;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5em;
+}
+
+.logoutButton {
+    padding: 10px 15px;
+    background-color: #fff;
+    color: #0e4296;
+    border: none;
+    cursor: pointer;
+}
+
+/* Content area */
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Slideshow styles */
+.slideshow {
+    width: 60%;
+    text-align: center;
+}
+
+.slideshowContainer {
+    position: relative;
+}
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.slideshowImage {
+    width: 100%;
+    height: auto;
+}
+
+/* Calendar styles */
+.calendar {
+    width: 35%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Divider styles */
+.divider {
+    margin: 20px 0;
+    border: 1px solid #ccc;
+}
+
+/* Venue booklist container */
+.venueBooklistContainer {
+    padding: 20px;
+}
+
+/* Sidebar container */
+.sidebarContainer {
+    display: flex;
+}
+
+.sidebar {
+    width: 20%;
+    padding: 10px;
+    background-color: #e1e1e1;
+    margin-right: 20px;
+}
+
+.sidebarButton {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Sidebar content */
+.sidebarContent {
+    width: 70%;
+}
+
+.header {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.newSidebarContainer {
+    padding: 20px;
+}
+
+.VMC {
+    padding: 20px;
+}
+
+/* Vertical line */
+.verticalLine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-left: 2px solid #0e4296;
+    padding-left: 10px;
+}
+
+/* Modal overlay */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+}
+
+/* Form group styles */
+.formGroup {
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Modal footer */
+.modalFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitButton {
+    background-color: #0e4296;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background-color: #ccc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
