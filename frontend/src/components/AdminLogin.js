@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './AdminLogin.module.css';
+import logo from '../assets/urslogo.png'
+import back from '../assets/close-outline.svg'
 
 const AdminLogin = () => {
     const [username, setUsername] = useState('');
@@ -40,8 +42,12 @@ const AdminLogin = () => {
     return (
         <div className={styles.container}>
             <div className={styles.formContainer}>
-                <h2 className={styles.title}>ADMIN LOGIN</h2>
-                <form onSubmit={handleLogin}>
+                <img className={styles.backButton} src={back} onClick={() => navigate('/')}/>
+                <img src={logo} className={styles.logo}/>
+                <h2 className={styles.title}>Welcome Admin</h2>
+                <p className={styles.subtext}>Please enter your details to sign in</p>
+                <form onSubmit={handleLogin} className={styles.form}>
+                    <p className={styles.label}>Your Username</p>
                     <input
                         type="text"
                         placeholder="Username"
@@ -50,6 +56,7 @@ const AdminLogin = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
+                    <p className={styles.label}>Password</p>
                     <input
                         type="password"
                         placeholder="Password"
@@ -58,21 +65,20 @@ const AdminLogin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <div className={styles.buttonContainer}>
-                        <button type="submit" className={styles.button}>Login</button>
-                        <button
-                            type="button"
-                            className={styles.button}
-                            onClick={handleSignUpClick}
-                        >
-                            Sign Up
-                        </button>
-                    </div>
+                    <p className={styles.forgot}>Forgot Password?</p>
+                    <button type="submit" className={styles.button}>Login</button>
                     {errorMessage && <p className={styles.error}>{errorMessage}</p>}
                 </form>
-                <p className={styles.forgotPassword}>Forgot Password?</p>
+                <div className={styles.adminCont}>
+                    <p className={styles.ask}>Not an admin?</p>
+                    <p
+                        className={styles.admin}
+                        onClick={() => navigate('/login')} // Navigate to Login
+                    >
+                        Click Here
+                    </p>
+                </div>
             </div>
-            <button className={styles.backButton} onClick={() => navigate('/')}>Back</button>
         </div>
     );
 };

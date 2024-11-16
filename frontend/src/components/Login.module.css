@@ -81,7 +81,11 @@
     background-color: #063970; /* Button color */
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.15s;
+}
+
+.button:hover {
+    background-color: #06397082;
 }
 
 /* Admin container styles */
@@ -100,6 +104,12 @@
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.admin:hover {
+    color: #063970;
+    text-decoration: underline;
 }
 
 /* Back button styles */
