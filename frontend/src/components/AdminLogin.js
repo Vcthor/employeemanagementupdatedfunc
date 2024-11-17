@@ -65,9 +65,18 @@ const AdminLogin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <p className={styles.forgot}>Forgot Password?</p>
+                    <div
+                    className={`${styles.flex} ${
+                        [errorMessage && <p className={styles.error}>{errorMessage}</p>, <p className={styles.forgot}>Forgot Password?</p>]
+                        .filter(Boolean).length === 1
+                        ? styles.singleChild
+                        : styles.multiChild
+                    }`}
+                    >
+                        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+                        <p className={styles.forgot}>Forgot Password?</p>
+                    </div>
                     <button type="submit" className={styles.button}>Login</button>
-                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
                 </form>
                 <div className={styles.adminCont}>
                     <p className={styles.ask}>Not an admin?</p>

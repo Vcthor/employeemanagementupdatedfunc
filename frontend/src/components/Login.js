@@ -60,8 +60,8 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <button type="submit" className={styles.button}>Login</button>
                     {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+                    <button type="submit" className={styles.button}>Login</button>
                 </form>
                 <div className={styles.adminCont}>
                     <p className={styles.ask}>Are you an admin?</p>

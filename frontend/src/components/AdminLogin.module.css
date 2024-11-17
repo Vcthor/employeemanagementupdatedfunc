@@ -57,7 +57,7 @@
 
 .label {
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 /* Input field styles */
@@ -71,10 +71,9 @@
 }
 
 .forgot {
-    align-self: flex-end;
-    margin-top: -8px;
+    margin-top: 0;
     font-size: 14px;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
     color: #063970;
     cursor: pointer;
 }
@@ -138,9 +137,27 @@
 /* Error message styles */
 .error {
     color: red; /* Style for error messages */
-    margin-top: 10px;
-    text-align: center;
+    margin-top: 0;
+    text-align: left;
 }
+
+.flex {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+.multiChild {
+  justify-content: space-between; /* Space between when there are two children */
+}
+
+.singleChild {
+  justify-content: flex-end !important; /* Align to the right when there's only one child */
+}
+
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -168,5 +185,8 @@
     }
     .backButton {
         padding: 8px 12px; /* Smaller back button */
+    }
+    .error, .forgot {
+        font-size: 12px;
     }
 }

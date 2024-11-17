@@ -57,7 +57,7 @@
 
 .label {
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 /* Input field styles */
@@ -125,8 +125,10 @@
 /* Error message styles */
 .error {
     color: red; /* Style for error messages */
-    margin-top: 10px;
-    text-align: center;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-size: 14px;
 }
 
 /* Responsive adjustments */
