@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styles from './AdminLogin.module.css';
+import logo from '../assets/urslogo.png'
+import back from '../assets/close-outline.svg'
 
 const AdminLogin = () => {
     const [username, setUsername] = useState('');
@@ -37,143 +40,56 @@ const AdminLogin = () => {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.formContainer}>
-                <h2 style={styles.title}>ADMIN LOGIN</h2>
-                <form onSubmit={handleLogin}>
+        <div className={styles.container}>
+            <div className={styles.formContainer}>
+                <img className={styles.backButton} src={back} onClick={() => navigate('/')}/>
+                <img src={logo} className={styles.logo}/>
+                <h2 className={styles.title}>Welcome Admin</h2>
+                <p className={styles.subtext}>Please enter your details to sign in</p>
+                <form onSubmit={handleLogin} className={styles.form}>
+                    <p className={styles.label}>Your Username</p>
                     <input
                         type="text"
                         placeholder="Username"
-                        style={styles.input}
+                        className={styles.input}
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
+                    <p className={styles.label}>Password</p>
                     <input
                         type="password"
                         placeholder="Password"
-                        style={styles.input}
+                        className={styles.input}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <div style={styles.buttonContainer}>
-                        <button type="submit" style={styles.button}>Login</button>
-                        <button
-                            type="button"
-                            style={styles.button}
-                            onClick={handleSignUpClick}
-                        >
-                            Sign Up
-                        </button>
+                    <div
+                    className={`${styles.flex} ${
+                        [errorMessage && <p className={styles.error}>{errorMessage}</p>, <p className={styles.forgot}>Forgot Password?</p>]
+                        .filter(Boolean).length === 1
+                        ? styles.singleChild
+                        : styles.multiChild
+                    }`}
+                    >
+                        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+                        <p className={styles.forgot}>Forgot Password?</p>
                     </div>
-                    {errorMessage && <p style={styles.error}>{errorMessage}</p>}
+                    <button type="submit" className={styles.button}>Login</button>
                 </form>
-                <p style={styles.forgotPassword}>Forgot Password?</p>
+                <div className={styles.adminCont}>
+                    <p className={styles.ask}>Not an admin?</p>
+                    <p
+                        className={styles.admin}
+                        onClick={() => navigate('/login')} // Navigate to Login
+                    >
+                        Click Here
+                    </p>
+                </div>
             </div>
-            <button style={styles.backButton} onClick={() => navigate('/')}>Back</button>
         </div>
     );
-};
-
-// Sidebar styles with hover effect
-const sidebarStyles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '250px',
-        backgroundColor: '#f8f8f8',
-        padding: '10px',
-        borderRadius: '5px',
-    },
-    item: {
-        padding: '10px',
-        margin: '5px 0',
-        textAlign: 'left',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s, color 0.3s',
-    },
-    itemHovered: {
-        backgroundColor: '#063970',
-        color: '#fff',
-    },
-    itemSelected: {
-        backgroundColor: '#1b4b87', // For when an item is selected
-        color: '#fff',
-    },
-    active: {
-        backgroundColor: '#063970',
-        color: '#fff',
-    },
-};
-
-// Inline styles (same as your Login.js)
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f5f5f5',
-    },
-    title: {
-        marginBottom: '20px',
-        color: '#063970',
-    },
-    formContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-        backgroundColor: '#fff',
-    },
-    input: {
-        width: '250px',
-        padding: '10px',
-        margin: '10px 0',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-    },
-    buttonContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: '10px',
-    },
-    button: {
-        flex: 1,
-        padding: '8px',
-        margin: '0 5px',
-        border: 'none',
-        borderRadius: '4px',
-        backgroundColor: '#063970',
-        color: '#fff',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s',
-    },
-    forgotPassword: {
-        marginTop: '10px',
-        color: '#063970',
-        cursor: 'pointer',
-    },
-    backButton: {
-        marginTop: '10px',
-        backgroundColor: 'transparent',
-        border: '1px solid #063970',
-        color: '#063970',
-        borderRadius: '5px',
-        padding: '5px 10px',
-        cursor: 'pointer',
-    },
-    error: {
-        color: 'red',
-        marginTop: '10px',
-    },
 };
 
 export default AdminLogin;

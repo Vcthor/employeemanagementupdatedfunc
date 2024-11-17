@@ -1,0 +1,15 @@
+/* Form group styles */
+.formGroup {
+    margin-bottom: 20px;
+}
+
+/* Input button styles */
+.input {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0e4296;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}

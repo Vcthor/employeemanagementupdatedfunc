@@ -1,0 +1,192 @@
+/* General container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f5f5f5; /* Background color */
+    padding: 20px; /* Ensure padding on smaller screens */
+    box-sizing: border-box;
+}
+
+/* Form container styles */
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    width: 100%; /* Full width for responsiveness */
+    max-width: 480px; /* Limit the max width */
+    min-width: 200px; /* Ensure it doesn't shrink too much */
+    box-sizing: border-box;
+    margin: 0 auto; /* Center the form */
+    position: relative;
+}
+
+.logo {
+    width: 64px ;
+}
+
+/* Title styles */
+.title {
+    margin-top: 8px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #063970; /* Title color */
+    text-align: center;
+}
+
+.subtext {
+    font-size: 14px;
+    color: #646464;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* Form styles */
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.label {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* Input field styles */
+.input {
+    width: 100%; /* Responsive input field */
+    padding: 12px 20px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.forgot {
+    margin-top: 0;
+    font-size: 14px;
+    margin-bottom: 0px;
+    color: #063970;
+    cursor: pointer;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+/* Button styles */
+.button {
+    padding: 12px 20px;
+    width: 100%; /* Full-width button */
+    margin-top: 12px;
+    margin-bottom: 24px;
+    border: none;
+    border-radius: 8px;
+    background-color: #063970; /* Button color */
+    color: #fff;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.button:hover {
+    background-color: #06397082;
+}
+
+/* Admin container styles */
+.adminCont {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px;
+}
+
+.ask {
+    font-size: 14px;
+}
+
+.admin {
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.admin:hover {
+    color: #063970;
+    text-decoration: underline;
+}
+
+/* Back button styles */
+.backButton {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Error message styles */
+.error {
+    color: red; /* Style for error messages */
+    margin-top: 0;
+    text-align: left;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+.multiChild {
+  justify-content: space-between; /* Space between when there are two children */
+}
+
+.singleChild {
+  justify-content: flex-end !important; /* Align to the right when there's only one child */
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .formContainer {
+        max-width: 90%; /* Allow form to take 90% of the screen */
+    }
+    .title {
+        font-size: 24px; /* Slightly smaller title */
+    }
+}
+
+@media (max-width: 480px) {
+    .formContainer {
+        padding: 20px; /* Reduce padding for very small screens */
+        max-width: 95%; /* Take almost the full width */
+    }
+    .title {
+        font-size: 22px; /* Adjust title size */
+    }
+    .input {
+        padding: 10px; /* Compact input fields */
+    }
+    .button {
+        padding: 10px; /* Adjust button padding */
+    }
+    .backButton {
+        padding: 8px 12px; /* Smaller back button */
+    }
+    .error, .forgot {
+        font-size: 12px;
+    }
+}

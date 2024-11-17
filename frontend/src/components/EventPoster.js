@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import styles from './EventPoster.module.css';
+
 
 const EventPoster = () => {
   const [image, setImage] = useState(null);
@@ -44,22 +46,22 @@ const EventPoster = () => {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '500px', margin: '20px auto', position: 'relative' }}>
+    <div className={{ width: '100%', maxWidth: '500px', margin: '20px auto', position: 'relative' }}>
       <div
         {...getRootProps()}
-        style={dropAreaStyle}
+        className={dropAreaStyle}
       >
         <input
           {...getInputProps()}
           id="fileInput"
-          style={{ display: 'none' }}
+          className={{ display: 'none' }}
           type="file"
           accept="image/*"
         />
         {image ? (
-          <img src={image} alt="Event Poster" style={posterImageStyle} />
+          <img src={image} alt="Event Poster" className={posterImageStyle} />
         ) : (
-          <div style={placeholderStyle}>
+          <div className={placeholderStyle}>
             <p>Drop here or browse to upload</p>
           </div>
         )}
@@ -75,26 +77,11 @@ const UploadButton = () => {
   };
 
   return (
-    <div style={styles.formGroup}>
+    <div className={styles.formGroup}>
       <label>Event Poster:</label>
-      <button onClick={handleClick} style={styles.input}>Upload</button>
+      <button onClick={handleClick} className={styles.input}>Upload</button>
     </div>
   );
-};
-
-const styles = {
-  formGroup: {
-    marginBottom: '20px',
-  },
-  input: {
-    padding: '10px 20px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    backgroundColor: '#0e4296',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-  },
 };
 
 export default function App() {
