@@ -119,6 +119,34 @@ const Admin = () => {
             fetchUsers();
         }
     }, [activeComponent]);
+
+    useEffect(() => {
+        axios.get('/api/events')
+            .then(response => {
+                setEvents(response.data);
+            })
+            .catch(error => console.error('Error fetching events:', error));
+    }, []);
+
+    const handleDelete = (eventId) => {
+        console.log('Attempting to delete event with ID:', eventId);  // Log the event ID for confirmation
+        if (window.confirm('Are you sure you want to delete this event?')) {
+            axios.delete(`/api/events/${eventId}`)
+                .then((response) => {
+                    console.log('Event deleted:', response.data);  // Log the response data from the backend
+                    setEvents(events.filter((event) => event.id !== eventId));  // Remove from the UI
+                })
+                .catch((error) => {
+                    console.error('Error deleting event:', error);
+                });
+        }
+    };
+    
+    
+    
+    
+    
+
     
 
     const handleLogout = () => {
@@ -136,10 +164,7 @@ const Admin = () => {
         // Implement your logic for confirming an event
     };
 
-    const handleDelete = (id) => {
-        console.log('Delete event with ID:', id);
-        // Implement your logic for deleting an event
-    };
+   
 
     const handleViewDocument = (documentName) => {
         // Construct the URL for the document in the 'uploads' folder
@@ -192,9 +217,7 @@ const Admin = () => {
                     <div >
                         <h2>Events</h2>
                         <div className={styles.addEventButtonContainer}>
-                            <button className={styles.addEventButton} onClick={() => console.log('Add New Event')}>
-                                Add New Event
-                            </button>
+                            
                         </div>
                         <table className={styles.table}>
     <thead>
@@ -212,63 +235,70 @@ const Admin = () => {
     <tbody>
         {events.length > 0 ? (
             events.map((event) => (
+                
                 <tr key={event.id} className={styles.tableRow}>
-                    <td className={styles.tableCell}>{event.name}</td>
-                    <td className={styles.tableCell}>{event.organization}</td>
-                    <td className={styles.tableCell}>{event.date}</td>
-                    <td className={styles.tableCell}>{event.duration}</td>
-                    <td className={styles.tableCell}>
-                        {event.documents && (
-                            <button
-                                className={styles.button}
-                                onClick={() => handleViewDocument(event.documents, event.name)}
-                                onMouseEnter={(e) => handleButtonHover(e, true)}
-                                onMouseLeave={(e) => handleButtonHover(e, false)}
-                            >
-                                View Document
-                            </button>
-                        )}
-                    </td>
-                    <td className={styles.tableCell}>
-                        {event.photo && (
-                            <button
-                                className={styles.button}
-                                onClick={() => handleViewImage(event.photo)}
-                                onMouseEnter={(e) => handleButtonHover(e, true)}
-                                onMouseLeave={(e) => handleButtonHover(e, false)}
-                            >
-                                View Image
-                            </button>
-                        )}
-                    </td>
-                    <td className={styles.tableCell}>{event.venue}</td>
-                    <td className={styles.tableCell}>
-                        <button
-                            className={styles.button}
-                            onClick={() => handleEdit(event.id)}
-                            onMouseEnter={(e) => handleButtonHover(e, true)}
-                            onMouseLeave={(e) => handleButtonHover(e, false)}
-                        >
-                            Edit
-                        </button>
-                        <button
-                            className={styles.button}
-                            onClick={() => handleConfirm(event.id)}
-                            onMouseEnter={(e) => handleButtonHover(e, true)}
-                            onMouseLeave={(e) => handleButtonHover(e, false)}
-                        >
-                            ✔
-                        </button>
-                        <button
-                            className={styles.button}
-                            onClick={() => handleDelete(event.id)}
-                            onMouseEnter={(e) => handleButtonHover(e, true)}
-                            onMouseLeave={(e) => handleButtonHover(e, false)}
-                        >
-                            ❌
-                        </button>
-                    </td>
-                </tr>
+    <td className={styles.tableCell}>{event.name}</td>
+    <td className={styles.tableCell}>{event.organization}</td>
+    <td className={styles.tableCell}>{event.date}</td>
+    <td className={styles.tableCell}>{event.duration}</td>
+    
+    <td className={styles.tableCell}>
+        {event.documents && (
+            <button
+                className={styles.button}
+                onClick={() => handleViewDocument(event.documents, event.name)}
+                onMouseEnter={(e) => handleButtonHover(e, true)}
+                onMouseLeave={(e) => handleButtonHover(e, false)}
+            >
+                View Document
+            </button>
+        )}
+    </td>
+    <td className={styles.tableCell}>
+        {event.photo && (
+            <button
+                className={styles.button}
+                onClick={() => handleViewImage(event.photo)}
+                onMouseEnter={(e) => handleButtonHover(e, true)}
+                onMouseLeave={(e) => handleButtonHover(e, false)}
+            >
+                View Image
+            </button>
+        )}
+    </td>
+    <td className={styles.tableCell}>{event.venue}</td>
+    <td className={styles.tableCell}>
+        <button
+            className={styles.button}
+            onClick={() => handleEdit(event.id)}
+            onMouseEnter={(e) => handleButtonHover(e, true)}
+            onMouseLeave={(e) => handleButtonHover(e, false)}
+        >
+            Edit
+        </button>
+        <button
+            className={styles.button}
+            onClick={() => handleConfirm(event.id)}
+            onMouseEnter={(e) => handleButtonHover(e, true)}
+            onMouseLeave={(e) => handleButtonHover(e, false)}
+        >
+            ✔
+        </button>
+        <button
+                    className={styles.button}
+                    onClick={() => {
+                        console.log('Delete button clicked with event id:', event.id);  // Ensure the ID is logged here
+                        handleDelete(event.id);
+                    }}
+                    onMouseEnter={(e) => handleButtonHover(e, true)}
+                    onMouseLeave={(e) => handleButtonHover(e, false)}
+                >
+                    ❌
+                </button>
+
+    </td>
+</tr>
+
             ))
         ) : (
             <tr>

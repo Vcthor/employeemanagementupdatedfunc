@@ -11,15 +11,40 @@ import styles from "./PublicPage.module.css";
 import logo from "../assets/urslogo.png";
 import login from "../assets/log-in.svg";
 import coeng from '../assets/coeng.jpg';
+import axios from "axios";
+
 
 const PublicPage = () => {
   const [selectedSidebar, setSelectedSidebar] = useState("New Booking");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [date, setDate] = useState(new Date());
+  const [events, setEvents] = useState([]); // State for storing events
   const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
   const [newSidebarSelection, setNewSidebarSelection] =
     useState("Dashboard Overview"); // New sidebar state
   const navigate = useNavigate();
+
+  const fetchEventsForDate = (selectedDate) => {
+    const formattedDate = selectedDate.toISOString().split('T')[0]; // Formats as yyyy-mm-dd
+    axios
+      .get(`/api/events?date=${formattedDate}`) // Send the formatted date to the backend
+      .then((response) => {
+        setEvents(response.data); // Set the events for the selected date
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchEventsForDate(date); // Fetch events on initial load
+  }, []);
+
+  // Trigger fetching events when the calendar date is changed
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+    fetchEventsForDate(newDate); // Fetch events when the date changes
+  };
 
   const images = [SteestImage, SttImage];
 
@@ -34,44 +59,6 @@ const PublicPage = () => {
 
   const handleLoginClick = () => {
     navigate("/login");
-  };
-  const renderSidebarContent = () => {
-    switch (selectedSidebar) {
-      case "New Booking":
-        return <p>Form to create a new booking.</p>;
-      case "Scheduled Bookings":
-        return <p>List of scheduled bookings.</p>;
-      case "Available Dates":
-        return <p>Calendar with available dates for booking.</p>;
-      case "Events":
-        return (
-          <div>
-            <p>Upcoming events information.</p>
-            <button
-              className={styles.addEventButton}
-              onClick={() => setModalOpen(true)}
-            >
-              Add Event
-            </button>
-          </div>
-        );
-      case "Report":
-        return <p>Report generation and analysis.</p>;
-      default:
-        return null;
-    }
-  };
-  const renderNewSidebarContent = () => {
-    switch (newSidebarSelection) {
-      case "University Supreme Student Government":
-        return <p>Dashboard overview and user summary.</p>;
-      case "COE Council":
-        return <p>User settings and preferences.</p>;
-      case "Notifications":
-        return <p>List of notifications for the user.</p>;
-      default:
-        return null;
-    }
   };
 
   return (
@@ -93,10 +80,10 @@ const PublicPage = () => {
           Login
         </button>
       </nav>
+
       <div className={styles.container}>
         {/* Main Content */}
         <div className={styles.firstContainer}>
-
           {/* Upcoming Events Section */}
           <div className={styles.upcomingEventsCard}>
             <div className={styles.upcomingEventsImageContainer}>
@@ -116,23 +103,30 @@ const PublicPage = () => {
 
           {/* Calendar on the Right */}
           <div className={styles.calendarContainer}>
-            <div>
-                <h2 className={styles.calendarTitle}>Campus Calendar</h2>
-                <Calendar
-                className={styles.calendar}
-                onChange={setDate}
-                value={date}
-                minDate={new Date(2020, 0, 1)}
-                />
-            </div>
+            <h2 className={styles.calendarTitle}>Campus Calendar</h2>
+            <Calendar
+              className={styles.calendar}
+              onChange={handleDateChange}
+              value={date}
+              minDate={new Date(2020, 0, 1)}
+            />
+            {/* Display the events for the selected date */}
             <div className={styles.eventsList}>
-                <p className={{ marginTop: "24px" }}>
-                <span className={styles.bold}>Selected Date:</span>{" "}
-                {date.toDateString()}
-                </p>
-                <p className={styles.eventCheck}>
-                <span className={styles.bold}>Event:</span> <span>No Event Scheduled</span>
-                </p>
+              <p className={styles.bold}>Selected Date:</p>
+              {date.toDateString()}
+              {events.length === 0 ? (
+                <p>No Event Scheduled</p>
+              ) : (
+                events.map((event) => (
+                  <div key={event.id} className={styles.eventItem}>
+                    <p><strong>Organization:</strong> {event.organization}</p>
+                    <p><strong>Venue:</strong> {event.venue}</p>
+                    <p><strong>Date:</strong> {event.date}</p>
+                    <p><strong>Duration:</strong> {event.duration}</p>
+                    <p><strong>Event Name:</strong> {event.name}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -140,17 +134,19 @@ const PublicPage = () => {
         {/* First Divider */}
         <hr className={styles.divider} />
 
-        <hr className={styles.divider} />
-
-        <div className={styles.newSidebarContainer}>
-          <h2 className={styles.header}>
-            {" "}
-            <Building2 size={20} color="#063970" /> Councils and Organization
-            List
-          </h2>
-          <div className={styles.sidebarContainer}>
-            <div className={styles.sidebar}>
-              {[
+        {/* News and Information Section (on the right) */}
+        <div className={styles.layoutContainer}>
+          <div className={styles.verticalSections}>
+            <div className={styles.leftSections}>
+              {/* Councils and Organization List */}
+              <div className={styles.newSidebarContainer}>
+                <h2 className={styles.header}>
+                  <Building2 size={20} color="#063970" /> Councils and Organization List
+                </h2>
+                <div className={styles.sidebarContainer}>
+                  <div className={styles.sidebar}>
+                    {/* Add your buttons here */}
+                    {[
                 "University Supreme Student Government",
                 "COE Council",
                 "COBA Council",
@@ -177,75 +173,62 @@ const PublicPage = () => {
                 "CORO URSAC",
                 "Christian Brotherhood International",
                 "Elevate URSAC Chapter",
-              ].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setNewSidebarSelection(item)}
-                  className={{
-                    ...styles.sidebarButton,
-                    backgroundColor:
-                      newSidebarSelection === item ? "#0e4296" : "transparent",
-                    color: newSidebarSelection === item ? "#fff" : "#0e4296",
-                  }}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-            <div className={styles.sidebarContent}>
-              <h3>{newSidebarSelection}</h3>
-              {renderNewSidebarContent()}
-            </div>
-          </div>
-          <hr className={styles.divider} />
-          <div className={styles.VMC}>
-            <div className={styles.verticalLine}>
-              <h3 className={styles.header}>VISION</h3>
-              <p>
-                The leading University in human resource development, knowledge
-                and technology generation, and environmental stewardship.
-              </p>
-              <h3 className={styles.header}>MISSION</h3>
-              <p>
-                The University of Rizal System is committed to nurturing and
-                producing upright and competent graduates and an empowered
-                community through relevant and sustainable higher professional
-                and technical instruction, research, extension, and production
-                services.
-              </p>
-              <h3 className={styles.header}>CORE VALUES</h3>
-              <p>R – Responsiveness</p>
-              <p>I – Integrity</p>
-              <p>S – Service</p>
-              <p>E – Excellence</p>
-              <p>S – Social Responsibility</p>
-            </div>
-          </div>
-        </div>
+                    ].map((item) => (
+                      <button
+                        key={item}
+                        onClick={() => setNewSidebarSelection(item)}
+                        className={{
+                          ...styles.sidebarButton,
+                          backgroundColor: newSidebarSelection === item ? "#0e4296" : "transparent",
+                          color: newSidebarSelection === item ? "#fff" : "#0e4296",
+                        }}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                  <div className={styles.sidebarContent}>
+                    <h3>{newSidebarSelection}</h3>
+                    {/* Dynamic content goes here */}
+                  </div>
+                </div>
+              </div>
 
-        {/* Merged VISION, MISSION, and Section 1 with News and Information */}
-        <div className={styles.mergedSection}>
-          <div className={styles.leftSection}>
-            <div className={styles.sectionWithLine}>
-              <h3 className={styles.header}>VISION</h3>
-              <p>
+              {/* Merged Vision and Mission Section */}
+              <div className={styles.mergedSection}>
+                <div className={styles.leftSection}>
+                  <h3 className={styles.header}>VISION</h3>
+                  <p>
                 The leading University in human resource development, knowledge
                 and technology generation, and environmental stewardship.
               </p>
-              <h3 className={styles.header}>MISSION</h3>
-              <p>
+                  <h3 className={styles.header}>MISSION</h3>
+                  <p>
                 The University of Rizal System is committed to nurturing and
                 producing upright and competent graduates and an empowered
                 community through relevant and sustainable higher professional
                 and technical instruction, research, extension, and production
                 services.
               </p>
-              <h3 className={styles.header}>CORE VALUES</h3>
-              <p>R – Responsiveness</p>
-              <p>I – Integrity</p>
-              <p>S – Service</p>
-              <p>E – Excellence</p>
-              <p>S – Social Responsibility</p>
+                  <h3 className={styles.header}>CORE VALUES</h3>
+                  <p>R – Responsiveness</p>
+                  <p>I – Integrity</p>
+                  <p>S – Service</p>
+                  <p>E – Excellence</p>
+                  <p>S – Social Responsibility</p>
+                </div>
+              </div>
+            </div>
+
+            {/* News and Information Section */}
+            <div className={styles.rightSection}>
+              <h3 className={styles.header}>News and Information</h3>
+              {/* Add news and info content here */}
+              <div className={styles.newsItem}>
+                <h4>Upcoming Event: CoEng Week</h4>
+                <p>Join us for CoEng Week from November 11-15, 2024!</p>
+              </div>
+              {/* Add more news items as necessary */}
             </div>
           </div>
         </div>
@@ -253,10 +236,7 @@ const PublicPage = () => {
 
       {/* Footer */}
       <footer className={styles.footer}>
-        <p>
-          &copy; {new Date().getFullYear()} Your School Name. All rights
-          reserved.
-        </p>
+        <p>&copy; {new Date().getFullYear()} Your School Name. All rights reserved.</p>
       </footer>
 
       {/* Third Divider - Optional */}
@@ -264,13 +244,5 @@ const PublicPage = () => {
     </div>
   );
 };
-
-// OfficerItem component to handle each officer's image and title
-const OfficerItem = ({ image, title }) => (
-  <div className={styles.officerItem}>
-    <img src={image} alt={title} className={styles.officerImage} />
-    <p>{title}:</p>
-  </div>
-);
 
 export default PublicPage;
