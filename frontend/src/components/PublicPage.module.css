@@ -10,7 +10,6 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 200px;
   max-height: 400px;
   overflow-y: scroll;
   scrollbar-gutter: stable;
@@ -193,6 +192,7 @@
   background-color: white;
   margin-top: 48px;
   display: flex;
+  flex-direction: column;
   text-align: center;
   border-radius: 16px;
   padding: 64px;
@@ -256,85 +256,6 @@
   font-size: 12px;
 }
 
-/* Media query for small screens */
-@media (max-width: 1400px) {
-  .calendarContainer {
-    flex: 0 0 auto; /* Fixed width of 300px */
-    max-width: 300px;
-    min-width: 300px;
-    padding: 24px;
-    border-radius: 16px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-}
-
-@media (max-width: 1250px) {
-  .firstContainer {
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items */
-  }
-
-  .upcomingEventsCard {
-    max-width: 100%; /* Full width on smaller screens */
-    margin: 0; /* Remove side margin */
-  }
-
-  .calendarContainer {
-    flex: 0 0 auto; /* Fixed width of 300px */
-    max-width: none;
-    min-width: auto;
-    gap: 24px;
-    width: 100%;
-    padding: 48px;
-    border-radius: 16px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    box-sizing: border-box;
-  }
-  .eventsList {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 930px) {
-    .firstContainer {
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items */
-    }
-  
-    .upcomingEventsCard {
-      max-width: 100%; /* Full width on smaller screens */
-      margin: 0; /* Remove side margin */
-    }
-
-    .calendar {
-        width: 100%;
-        height: auto;
-    }
-  
-    .calendarContainer {
-      flex: 0 0 auto; /* Fixed width of 300px */
-      max-width: none;
-      min-width: auto;
-      gap: 24px;
-      width: 100%;
-      padding: 48px;
-      border-radius: 16px;
-      background-color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      display: block;
-      box-sizing: border-box;
-    }
-    .eventsList {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-  }
 
 .verticalSections {
   display: flex;
@@ -355,24 +276,26 @@
   margin-bottom: 16px;
 }
 
-
-.sidebar {
-  width: 300px; 
-}
-
 .layoutContainer {
   margin-top: 48px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 36px;
   width: 100%;
 }
 
-.sidebarContainer {
-  display: flex;
+.rightSection {
+  background-color: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
 }
 
-.sidebarContent {
-  padding: 24px;
+.sidebarContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
 }
 
 /* .sidebarButton {
@@ -431,4 +354,122 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: white;
+}
+
+/* Media query for small screens */
+@media (max-width: 1400px) {
+  .calendarContainer {
+    flex: 0 0 auto; /* Fixed width of 300px */
+    max-width: 300px;
+    min-width: 300px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 1250px) {
+  .firstContainer {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items */
+  }
+
+  .upcomingEventsCard {
+    max-width: 100%; /* Full width on smaller screens */
+    margin: 0; /* Remove side margin */
+  }
+
+  .calendarContainer {
+    flex: 0 0 auto; /* Fixed width of 300px */
+    max-width: none;
+    min-width: auto;
+    gap: 24px;
+    width: 100%;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    box-sizing: border-box;
+  }
+  .eventsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .layoutContainer {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 930px) {
+    .container {
+      padding: 24px 16px;
+    }
+
+    .firstContainer {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items */
+    }
+  
+    .upcomingEventsCard {
+      max-width: 100%; /* Full width on smaller screens */
+      margin: 0; /* Remove side margin */
+    }
+
+    .calendar {
+        width: 100%;
+        height: auto;
+    }
+  
+    .calendarContainer {
+      flex: 0 0 auto; /* Fixed width of 300px */
+      max-width: none;
+      min-width: auto;
+      gap: 24px;
+      width: 100%;
+      padding: 48px;
+      border-radius: 16px;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: block;
+      box-sizing: border-box;
+    }
+    .eventsList {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+@media (max-width: 426px) {
+  .navbar {
+    padding: 24px 16px;
+  }
+
+  .title {
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 0.75em;
+  }
+  
+  .loginButton {
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #063970;
+    border: none;
+    gap: 4px;
+    font-size: 12px;
+    cursor: pointer;
+  }
 }
