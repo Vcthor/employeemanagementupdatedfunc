@@ -4,6 +4,7 @@ import axios from 'axios'; // Import Axios
 import styles from './Login.module.css';
 import logo from '../assets/urslogo.png'
 import back from '../assets/close-outline.svg'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 
 const Login = () => {
@@ -11,6 +12,11 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate(); // Initialize navigate function
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -43,6 +49,7 @@ const Login = () => {
                 <p className={styles.subtext}>Please enter your details to sign in</p>
                 <form onSubmit={handleLogin} className={styles.form}>
                     <p className={styles.label}>Your Username</p>
+                    <div className={styles.inputContainer}>
                     <input
                         type="text"
                         placeholder="Username"
@@ -53,13 +60,22 @@ const Login = () => {
                     />
                     <p className={styles.label}>Password</p>
                     <input
-                        type="password"
-                        placeholder="Password"
-                        className={styles.input}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            />
+            {/* Eye Icon Button Inside the Input */}
+            <button
+                type="button"
+                className={styles.eyeButton}
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button> </div>
                     {errorMessage && <p className={styles.error}>{errorMessage}</p>}
                     <button type="submit" className={styles.button}>Login</button>
                 </form>

@@ -159,3 +159,25 @@
         padding: 8px 12px; /* Smaller back button */
     }
 }
+
+.inputContainer {
+    position: relative;
+    width: 100%;
+}
+
+/* Eye Icon Positioned Inside the Input Field */
+.eyeButton {
+    position: absolute;
+    top: 74%;
+    right: 10px; /* Aligns the button to the right inside the input */
+    transform: translateY(-50%); /* Centers the icon vertically */
+    background: none;
+    border: none;
+    color: #0e4296; /* Match your theme color */
+    font-size: 1.2rem;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

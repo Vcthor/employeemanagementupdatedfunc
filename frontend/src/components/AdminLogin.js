@@ -4,12 +4,18 @@ import axios from 'axios';
 import styles from './AdminLogin.module.css';
 import logo from '../assets/urslogo.png'
 import back from '../assets/close-outline.svg'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const AdminLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     // Function to handle login
     const handleLogin = async (e) => {
@@ -56,15 +62,25 @@ const AdminLogin = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
+                    <div className={styles.inputContainer}>
                     <p className={styles.label}>Password</p>
                     <input
-                        type="password"
-                        placeholder="Password"
-                        className={styles.input}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            /> {/* Eye Icon Button Inside the Input */}
+            <button
+                type="button"
+                className={styles.eyeButton}
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+                    </div>
                     <div
                     className={`${styles.flex} ${
                         [errorMessage && <p className={styles.error}>{errorMessage}</p>, <p className={styles.forgot}>Forgot Password?</p>]

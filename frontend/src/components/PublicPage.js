@@ -4,48 +4,28 @@ import { useNavigate } from "react-router-dom";
 import PHImage from "../assets/PH.JPG";
 import SteestImage from "../assets/steest.PNG";
 import SttImage from "../assets/stt.jpg";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 import { Building2 } from "lucide-react";
 import styles from "./PublicPage.module.css";
 import logo from "../assets/urslogo.png";
 import login from "../assets/log-in.svg";
 import coeng from '../assets/coeng.jpg';
 import axios from "axios";
+import CustomCalendar from './CustomCalendar';
 
 
 const PublicPage = () => {
   const [selectedSidebar, setSelectedSidebar] = useState("New Booking");
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]); // State for storing events
   const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
   const [newSidebarSelection, setNewSidebarSelection] =
     useState("Dashboard Overview"); // New sidebar state
   const navigate = useNavigate();
 
-  const fetchEventsForDate = (selectedDate) => {
-    const formattedDate = selectedDate.toISOString().split('T')[0]; // Formats as yyyy-mm-dd
-    axios
-      .get(`/api/events?date=${formattedDate}`) // Send the formatted date to the backend
-      .then((response) => {
-        setEvents(response.data); // Set the events for the selected date
-      })
-      .catch((error) => {
-        console.error("Error fetching events:", error);
-      });
-  };
 
-  useEffect(() => {
-    fetchEventsForDate(date); // Fetch events on initial load
-  }, []);
 
-  // Trigger fetching events when the calendar date is changed
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-    fetchEventsForDate(newDate); // Fetch events when the date changes
-  };
 
+  //slideshoww
   const images = [SteestImage, SttImage];
 
   const nextSlide = useCallback(() => {
@@ -57,9 +37,17 @@ const PublicPage = () => {
     return () => clearTimeout(timeout);
   }, [nextSlide]);
 
+
+
+  //login button
+
   const handleLoginClick = () => {
     navigate("/login");
   };
+
+
+
+
 
   return (
     <div>
@@ -74,17 +62,26 @@ const PublicPage = () => {
             <h1 className={styles.subtitle}>Event Booking System</h1>
           </div>
         </div>
-
         <button onClick={handleLoginClick} className={styles.loginButton}>
           <img src={login} className={styles.loginIcon} />
           Login
         </button>
       </nav>
 
+
+
+
+
       <div className={styles.container}>
         {/* Main Content */}
+
+
+
         <div className={styles.firstContainer}>
           {/* Upcoming Events Section */}
+
+
+
           <div className={styles.upcomingEventsCard}>
             <div className={styles.upcomingEventsImageContainer}>
               <img
@@ -101,34 +98,16 @@ const PublicPage = () => {
             </div>
           </div>
 
-          {/* Calendar on the Right */}
-          <div className={styles.calendarContainer}>
-            <h2 className={styles.calendarTitle}>Campus Calendar</h2>
-            <Calendar
-              className={styles.calendar}
-              onChange={handleDateChange}
-              value={date}
-              minDate={new Date(2020, 0, 1)}
-            />
-            {/* Display the events for the selected date */}
-            <div className={styles.eventsList}>
-              <p className={styles.bold}>Selected Date:</p>
-              {date.toDateString()}
-              {events.length === 0 ? (
-                <p>No Event Scheduled</p>
-              ) : (
-                events.map((event) => (
-                  <div key={event.id} className={styles.eventItem}>
-                    <p><strong>Organization:</strong> {event.organization}</p>
-                    <p><strong>Venue:</strong> {event.venue}</p>
-                    <p><strong>Date:</strong> {event.date}</p>
-                    <p><strong>Duration:</strong> {event.duration}</p>
-                    <p><strong>Event Name:</strong> {event.name}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+
+          <div>
+      <h1>Welcome to the Event Calendar</h1>
+      <CustomCalendar />
+    </div>
+
+
+
+          
+
         </div>
 
         {/* First Divider */}

@@ -180,3 +180,10 @@
     border: none;
     cursor: pointer;
 }
+.footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #063970;
+    color: #fff;
+    border-top: 1px solid #ccc;
+  }

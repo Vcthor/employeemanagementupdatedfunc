@@ -121,26 +121,88 @@ const Admin = () => {
     }, [activeComponent]);
 
     useEffect(() => {
-        axios.get('/api/events')
+        axios.get('http://localhost:5000/api/events')  // Update URL to point to the correct port
             .then(response => {
                 setEvents(response.data);
             })
             .catch(error => console.error('Error fetching events:', error));
     }, []);
+    
 
-    const handleDelete = (eventId) => {
-        console.log('Attempting to delete event with ID:', eventId);  // Log the event ID for confirmation
-        if (window.confirm('Are you sure you want to delete this event?')) {
-            axios.delete(`/api/events/${eventId}`)
-                .then((response) => {
-                    console.log('Event deleted:', response.data);  // Log the response data from the backend
-                    setEvents(events.filter((event) => event.id !== eventId));  // Remove from the UI
-                })
-                .catch((error) => {
-                    console.error('Error deleting event:', error);
-                });
+    // para sa delete button
+    const handleDelete = async (eventId) => {
+        console.log('Attempting to delete event with ID:', eventId);
+        
+        const confirmed = window.confirm('Are you sure you want to delete this event?');
+        if (!confirmed) return;
+    
+        try {
+            const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            const responseBody = await response.json();  // Get the response body
+            console.log('Response body:', responseBody);  // Log the response body
+    
+            if (response.ok) {
+                console.log('Delete response:', responseBody);
+                alert('Event deleted successfully');
+                setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+            } else {
+                console.error('Delete failed:', responseBody);
+                alert(`Failed to delete event: ${responseBody.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error deleting event:', error);
+            alert('Error deleting event');
         }
     };
+    
+    
+    
+      
+    
+    
+    
+// para sa approve button
+const handleConfirm = async (eventId) => {
+    console.log('Attempting to approve event with ID:', eventId);
+
+    const confirmed = window.confirm(`Are you sure you want to approve this event?`);
+    if (!confirmed) return;
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/events/approve/${eventId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Approve response:', data);
+            alert('Event approved successfully!');
+            setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+        } else {
+            const errorData = await response.json();
+            console.error('Approval failed:', errorData);
+            alert(`Failed to approve event: ${errorData.message || 'Unknown error'}`);
+        }
+    } catch (error) {
+        console.error('Error approving event:', error);
+        alert('Error approving event.');
+    }
+};
+
+
+
+    
+    
+    
     
     
     
@@ -154,15 +216,9 @@ const Admin = () => {
         navigate('/login');
     };
 
-    const handleEdit = (id) => {
-        console.log('Edit event with ID:', id);
-        // Implement your logic for editing an event
-    };
+    
 
-    const handleConfirm = (id) => {
-        console.log('Confirm event with ID:', id);
-        // Implement your logic for confirming an event
-    };
+   
 
    
 
@@ -270,14 +326,6 @@ const Admin = () => {
     <td className={styles.tableCell}>
         <button
             className={styles.button}
-            onClick={() => handleEdit(event.id)}
-            onMouseEnter={(e) => handleButtonHover(e, true)}
-            onMouseLeave={(e) => handleButtonHover(e, false)}
-        >
-            Edit
-        </button>
-        <button
-            className={styles.button}
             onClick={() => handleConfirm(event.id)}
             onMouseEnter={(e) => handleButtonHover(e, true)}
             onMouseLeave={(e) => handleButtonHover(e, false)}
@@ -285,16 +333,16 @@ const Admin = () => {
             ✔
         </button>
         <button
-                    className={styles.button}
-                    onClick={() => {
-                        console.log('Delete button clicked with event id:', event.id);  // Ensure the ID is logged here
-                        handleDelete(event.id);
-                    }}
-                    onMouseEnter={(e) => handleButtonHover(e, true)}
-                    onMouseLeave={(e) => handleButtonHover(e, false)}
-                >
-                    ❌
-                </button>
+    className={styles.button}
+    onClick={() => {
+        console.log('Delete button clicked for event ID:', event.id);  // Log the event ID
+        handleDelete(event.id);  // Pass event.id to the delete function
+    }}
+>
+    ❌
+</button>
+
+
 
     </td>
 </tr>
