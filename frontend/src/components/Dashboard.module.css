@@ -1,27 +1,60 @@
 /* General container styles */
 .container {
     background-color: #f9f9f9;
+    padding: 48px 96px;
 }
 
 /* Navbar styles */
 .navbar {
-    background-color: #0e4296;
-    color: #fff;
-    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 24px 96px;
+    background-color: #063970;
+    color: #fff;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+}
+
+.titleflex {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+}
+
+.title {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+}
+
+.subtitle {
+    margin-top: -8px;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .logo {
-    font-size: 1.5em;
+    width: 48px;
+    height: 48px;
+}
+
+.loginIcon {
+    width: 24px;
+    height: 24px;
 }
 
 .logoutButton {
-    padding: 10px 15px;
-    background-color: #fff;
-    color: #0e4296;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #063970;
     border: none;
+    gap: 4px;
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -32,8 +65,74 @@
     padding: 20px;
 }
 
+.firstContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping for smaller screens */
+    gap: 36px;
+    /* Reduced gap for smaller screens */
+    justify-content: space-between;
+    /* Space out items */
+}
+
+.upcomingEventsCard {
+    position: relative;
+    height: auto;
+    max-height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    /* Allow it to take remaining space */
+    max-width: 100%;
+    /* Full width on small screens */
+    min-width: 300px;
+    /* Ensure it doesn’t shrink too much */
+}
+
+.upcomingEventImage {
+    width: 100%;
+    /* Full width of container */
+    height: 100%;
+    /* Full height of container */
+    object-fit: cover;
+    /* Ensure the image fills the container and maintains aspect ratio */
+    object-position: center;
+    /* Center the image in the container */
+    display: block;
+    /* Avoid inline gaps */
+    border-radius: 16px;
+    /* Maintain rounded corners */
+}
+
+.gradientOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 36px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.upcomingEventsText {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.eventDetails {
+    font-size: 16px;
+}
+
+
 /* Slideshow styles */
-.slideshow {
+/* .slideshow {
     width: 60%;
     text-align: center;
 }
@@ -56,52 +155,54 @@
 .slideshowImage {
     width: 100%;
     height: auto;
-}
+} */
 
 /* Calendar styles */
-.calendar {
+/* .calendar {
     width: 35%;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Divider styles */
-.divider {
-    margin: 20px 0;
-    border: 1px solid #ccc;
-}
+} */
 
 /* Venue booklist container */
 .venueBooklistContainer {
-    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 48px;
 }
 
-/* Sidebar container */
-.sidebarContainer {
+.sidebarrContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.sidebarr {
     display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    gap: 4px;
 }
 
-.sidebar {
-    width: 20%;
-    padding: 10px;
-    background-color: #e1e1e1;
-    margin-right: 20px;
-}
-
-.sidebarButton {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f1f1f1;
+.sidebarr button {
+    padding: 16px 8px;
+    border-radius: 0px;
     border: none;
-    text-align: left;
     cursor: pointer;
+    background-color: #0e4296;
+    color: white;
+    transition: 0.15s;
+    border-radius: 8px;
 }
 
-/* Sidebar content */
-.sidebarContent {
-    width: 70%;
+.sidebarr button:hover {
+    background-color: #0e4296bc;
+
 }
 
 .header {
@@ -113,17 +214,89 @@
     padding: 20px;
 }
 
-.VMC {
-    padding: 20px;
+.addEventButton {
+    background-color: #0e4296;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.15s;
 }
 
-/* Vertical line */
-.verticalLine {
+.addEventButton:hover {
+    background-color: #0e4296bc;
+}
+
+/* VMGO */
+.mergedSection {
+    background-color: white;
+    margin-top: 48px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    border-left: 2px solid #0e4296;
-    padding-left: 10px;
+    text-align: center;
+    border-radius: 16px;
+    padding: 64px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vgmoHeader {
+    color: #154c79;
+    margin-bottom: 8px;
+}
+
+.layoutContainer {
+    margin-top: 48px;
+    display: block;
+    gap: 36px;
+    width: 100%;
+}
+
+.leftSection {
+    background-color: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    color: #154c79;
+}
+
+.sidebarContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    gap: 4px;
+}
+
+.sidebar button {
+    padding: 16px 8px;
+    border-radius: 0px;
+    border: none;
+    cursor: pointer;
+    background-color: #0e4296;
+    color: white;
+    transition: 0.15s;
+    border-radius: 8px;
+}
+
+.sidebar button:hover {
+    background-color: #0e4296bc;
+
+}
+
+.vgmo:not(:last-child) {
+    margin-bottom: 32px;
 }
 
 /* Modal overlay */
@@ -180,10 +353,11 @@
     border: none;
     cursor: pointer;
 }
+
 .footer {
     text-align: center;
     padding: 10px 0;
     background-color: #063970;
     color: #fff;
     border-top: 1px solid #ccc;
-  }
+}
