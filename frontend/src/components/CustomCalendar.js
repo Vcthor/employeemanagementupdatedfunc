@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import styles from "./Customcal.css";
 
 const CustomCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(null); // Store selected date
@@ -7,15 +10,15 @@ const CustomCalendar = () => {
   const [filteredEvents, setFilteredEvents] = useState([]); // Store events for the selected date
   const [calendarDate, setCalendarDate] = useState(new Date()); // Current calendar date
 
-  // Fetch all events from the backend when the component loads
+  // Fetch all events from the "approved" table on component load
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/events");
-        console.log("All events fetched from backend:", response.data);
+        const response = await axios.get("http://localhost:5000/api/approved");
+        console.log("All approved events fetched from backend:", response.data);
         setAllEvents(response.data); // Store all events
       } catch (error) {
-        console.error("Error fetching events:", error);
+        console.error("Error fetching approved events:", error);
         setAllEvents([]); // Clear data on error
       }
     };
@@ -75,12 +78,16 @@ const CustomCalendar = () => {
   return (
     <div>
       <div>
-        <button onClick={() => changeMonth(-1)}>Previous</button>
+        <button onClick={() => changeMonth(-1)}>
+          <FontAwesomeIcon icon={faCaretLeft} />
+        </button>
         <h3>
           {calendarDate.toLocaleString("default", { month: "long" })}{" "}
           {calendarDate.getFullYear()}
         </h3>
-        <button onClick={() => changeMonth(1)}>Next</button>
+        <button onClick={() => changeMonth(1)}>
+          <FontAwesomeIcon icon={faCaretRight} />
+        </button>
       </div>
 
       <div

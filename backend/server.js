@@ -195,36 +195,37 @@ app.get('/api/images', (req, res) => {
 
 
 
+//calendar
 
-
-app.get('/api/events', (req, res) => {
+app.get('/api/approved', (req, res) => {
   const { date } = req.query;
 
-  // Log received date for debugging
-  console.log("Received Date from frontend:", date);
-
   if (!date) {
-      return res.status(400).json({ message: 'Date is required' });
-  }
-
-  // Use DATE(date) to extract the date part for comparison
-  connection.query(
-      'SELECT * FROM events WHERE DATE(date) = ?',
+    // Fetch all approved events if no date is provided
+    connection.query('SELECT * FROM approved', (err, results) => {
+      if (err) {
+        console.error("Error querying database:", err);
+        return res.status(500).json({ message: 'Database query error' });
+      }
+      res.json(results); // Return all approved events
+    });
+  } else {
+    // Fetch events for the specific date
+    connection.query(
+      'SELECT * FROM approved WHERE DATE(date) = ?',
       [date],
       (err, results) => {
-          if (err) {
-              console.error("Error querying database:", err);
-              return res.status(500).json({ message: 'Database query error' });
-          }
-
-          // Log filtered results for debugging
-          console.log("Filtered Results:", results);
-
-          // Send back the filtered events
-          res.json(results);
+        if (err) {
+          console.error("Error querying database:", err);
+          return res.status(500).json({ message: 'Database query error' });
+        }
+        res.json(results); // Return filtered events
       }
-  );
+    );
+  }
 });
+
+
 
 
 
@@ -265,44 +266,43 @@ app.delete('/api/events/:id', (req, res) => {
 
 // aprrovving daterow and moving to tables
 
-app.post('/api/events/:eventId/approve', (req, res) => {
-  const { eventId } = req.params;
+app.post('/api/events/approve/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`Received request to approve event with ID: ${id}`); // Log received ID
 
-  // Step 1: Fetch the event data from `events` table
-  const fetchQuery = 'SELECT * FROM events WHERE id = ?';
-  db.query(fetchQuery, [eventId], (err, results) => {
-      if (err) {
-          console.error('Error fetching event:', err);
-          return res.status(500).json({ message: 'Error fetching event' });
-      }
+  // Step 1: Move the row from events to approved
+  const insertQuery = `
+    INSERT INTO approved (id, name, organization, date, duration, documents, photo, venue)
+    SELECT id, name, organization, date, duration, documents, photo, venue
+    FROM events
+    WHERE id = ?;
+  `;
 
-      if (results.length === 0) {
-          return res.status(404).json({ message: 'Event not found' });
-      }
+  const deleteQuery = 'DELETE FROM events WHERE id = ?';
 
-      const eventData = results[0]; // Extract the event row
+  connection.query(insertQuery, [id], (err, result) => {
+    if (err) {
+      console.error('Error approving event:', err);
+      return res.status(500).json({ message: 'Error approving event', error: err });
+    }
 
-      // Step 2: Insert the event into the `approved` table
-      const insertQuery = 'INSERT INTO approved SET ?';
-      db.query(insertQuery, eventData, (err, insertResults) => {
-          if (err) {
-              console.error('Error inserting into approved:', err);
-              return res.status(500).json({ message: 'Error approving event' });
-          }
+    if (result.affectedRows > 0) {
+      // Step 2: Delete the row from the original table
+      connection.query(deleteQuery, [id], (err, deleteResult) => {
+        if (err) {
+          console.error('Error deleting event after approval:', err);
+          return res.status(500).json({ message: 'Error cleaning up original event', error: err });
+        }
 
-          // Step 3: Delete the event from the `events` table
-          const deleteQuery = 'DELETE FROM events WHERE id = ?';
-          db.query(deleteQuery, [eventId], (err, deleteResults) => {
-              if (err) {
-                  console.error('Error deleting event:', err);
-                  return res.status(500).json({ message: 'Error removing event from events table' });
-              }
-
-              res.status(200).json({ message: 'Event approved successfully' });
-          });
+        res.status(200).json({ message: 'Event approved successfully!' });
       });
+    } else {
+      res.status(404).json({ message: 'Event not found' });
+    }
   });
 });
+
+
 
 
 

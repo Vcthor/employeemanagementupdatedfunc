@@ -171,7 +171,7 @@ const Admin = () => {
 const handleConfirm = async (eventId) => {
     console.log('Attempting to approve event with ID:', eventId);
 
-    const confirmed = window.confirm(`Are you sure you want to approve this event?`);
+    const confirmed = window.confirm('Are you sure you want to approve this event?');
     if (!confirmed) return;
 
     try {
@@ -182,21 +182,24 @@ const handleConfirm = async (eventId) => {
             },
         });
 
+        const responseBody = await response.json(); // Get the response body
+        console.log('Response body:', responseBody); // Log the response body
+
         if (response.ok) {
-            const data = await response.json();
-            console.log('Approve response:', data);
+            console.log('Approve response:', responseBody);
             alert('Event approved successfully!');
             setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
         } else {
-            const errorData = await response.json();
-            console.error('Approval failed:', errorData);
-            alert(`Failed to approve event: ${errorData.message || 'Unknown error'}`);
+            console.error('Approval failed:', responseBody);
+            alert(`Failed to approve event: ${responseBody.message || 'Unknown error'}`);
         }
     } catch (error) {
         console.error('Error approving event:', error);
-        alert('Error approving event.');
+        alert('Error approving event');
     }
 };
+
+
 
 
 
@@ -324,14 +327,16 @@ const handleConfirm = async (eventId) => {
     </td>
     <td className={styles.tableCell}>{event.venue}</td>
     <td className={styles.tableCell}>
-        <button
-            className={styles.button}
-            onClick={() => handleConfirm(event.id)}
-            onMouseEnter={(e) => handleButtonHover(e, true)}
-            onMouseLeave={(e) => handleButtonHover(e, false)}
-        >
-            ✔
-        </button>
+    <button
+    className={styles.button}
+    onClick={() => {
+        console.log('Approve button clicked for event ID:', event.id); // Log the event ID
+        handleConfirm(event.id); // Pass event.id to the approve function
+    }}
+>
+    ✔
+</button>
+
         <button
     className={styles.button}
     onClick={() => {
