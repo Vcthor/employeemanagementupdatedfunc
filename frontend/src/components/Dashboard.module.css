@@ -131,6 +131,22 @@
 }
 
 
+.editButton {
+    float: right; /* Places the button on the right side */
+    margin-right: 10px; /* Adds some spacing on the right */
+    padding: 10px 15px; /* Adjusts the button's padding */
+    background-color: #0e4296; /* Example background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .editButton:hover {
+    background-color: #0c387d; /* Darken the button on hover */
+  }
+
+
 /* Slideshow styles */
 /* .slideshow {
     width: 60%;
@@ -361,3 +377,110 @@
     color: #fff;
     border-top: 1px solid #ccc;
 }
+
+.timeGroup {
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+  }
+  
+  .timeInput {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  label {
+    font-size: 16px;
+  }
+  
+  span {
+    margin: 0 10px;
+  }
+
+  .timeFromGroup, .timeToGroup {
+    display: flex;
+    gap: 10px; /* Space between the selects */
+  }
+  
+  .timeFromGroup select, .timeToGroup select {
+    flex: 1; /* Make the select elements take equal width */
+  }
+
+
+  /* styles.module.css */
+
+/* Modal backdrop */
+.modalWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark background overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensures it's above other content */
+  }
+  
+  /* Modal content styling */
+  .modalContent {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 350px; /* Reduced width */
+    max-width: 90%;
+    height: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Form styling */
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Form group styling */
+  .formGroup {
+    margin-bottom: 8px;
+  }
+  
+  .input {
+    padding: 5px;
+    margin-top: 1px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+
+  
+  /* Buttons styling */
+  .formButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .submitButton, .cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitButton {
+    background-color: #0e4296;
+    color: white;
+  }
+  
+  .cancelButton {
+    background-color: #e0e0e0;
+  }
+  
+  .submitButton:hover {
+    background-color: #0c387d;
+  }
+  
+  .cancelButton:hover {
+    background-color: #c1c1c1;
+  }
+  

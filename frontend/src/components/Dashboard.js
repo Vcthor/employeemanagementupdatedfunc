@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SteestImage from "../assets/steest.PNG";
 import SttImage from "../assets/stt.jpg";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Building2, CalendarPlus } from "lucide-react";
 import axios from "axios";
@@ -11,6 +10,9 @@ import styles from "./Dashboard.module.css";
 import CustomCalendar from "./CustomCalendar";
 import logo from "../assets/urslogo.png";
 import logout from "../assets/logout.svg";
+import EventModal from './EventModal';
+import Slideshow from "./Slideshow";
+import CouncilDisplayedit from './CouncilDisplayedit';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -19,41 +21,35 @@ const Dashboard = () => {
     loggedInTime: new Date().toLocaleString(),
   };
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [date, setDate] = useState(new Date());
+ 
+ 
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSidebar, setSelectedSidebar] = useState("New Booking");
   const [newSidebarSelection, setNewSidebarSelection] =
     useState("Dashboard Overview");
   const [eventData, setEventData] = useState({
+    fromHour: "",
+    fromMinute: "00",
+    fromAmPm: "", // No default AM/PM
+    toHour: "",
+    toMinute: "00",
+    toAmPm: "", // No default AM/PM
     venue: "",
     name: "",
     organization: "",
-    date: "",
+    fromDate: "",
+    toDate: "",
     duration: "",
     document: null,
     poster: null,
   });
 
-  const images = [SteestImage, SttImage];
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
-  }, [images.length]);
-
-  useEffect(() => {
-    const timeout = setTimeout(nextSlide, 5000);
-    return () => clearTimeout(timeout);
-  }, [nextSlide]);
+ 
 
   const renderSidebarContent = () => {
     switch (selectedSidebar) {
       case "New Booking":
         return <p>Form to create a new booking.</p>;
-      case "Scheduled Bookings":
-        return <p>List of scheduled bookings.</p>;
-      case "Available Dates":
-        return <p>Calendar with available dates for booking.</p>;
       case "Events":
         return (
           <div>
@@ -73,18 +69,7 @@ const Dashboard = () => {
     }
   };
 
-  const renderNewSidebarContent = () => {
-    switch (newSidebarSelection) {
-      case "University Supreme Student Government":
-        return <p>Dashboard overview and user summary.</p>;
-      case "COE Council":
-        return <p>User settings and preferences.</p>;
-      case "Notifications":
-        return <p>List of notifications for the user.</p>;
-      default:
-        return null;
-    }
-  };
+ 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -104,35 +89,56 @@ const Dashboard = () => {
 
   const handleModalSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("venue", eventData.venue);
-    formData.append("name", eventData.name);
-    formData.append("organization", eventData.organization);
-    formData.append("date", eventData.date);
-    formData.append("duration", eventData.duration);
-    formData.append("document", eventData.document);
-    formData.append("poster", eventData.poster);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/events",
-        formData,
-        {
+  
+    // Ensure all time values are selected before proceeding
+    if (
+      eventData.fromHour && eventData.fromMinute && eventData.fromAmPm &&
+      eventData.toHour && eventData.toMinute && eventData.toAmPm
+    ) {
+      // Format the start and end times into a string like "12:00 AM to 1:00 PM"
+      const fromTime = eventData.fromHour && eventData.fromMinute && eventData.fromAmPm
+        ? `${String(eventData.fromHour).padStart(2, '0')}:${String(eventData.fromMinute).padStart(2, '0')} ${eventData.fromAmPm || 'AM'}`
+        : '00:00 AM'; // Default to 00:00 AM if no value for hour/minute/AM/PM
+  
+      const toTime = eventData.toHour && eventData.toMinute && eventData.toAmPm
+        ? `${String(eventData.toHour).padStart(2, '0')}:${String(eventData.toMinute).padStart(2, '0')} ${eventData.toAmPm || 'AM'}`
+        : '00:00 AM'; // Default to 00:00 AM if no value for hour/minute/AM/PM
+  
+      const duration = `${fromTime} to ${toTime}`; // Combine them into a duration string
+  
+      // Now append the formatted duration to the formData
+      const formData = new FormData();
+      formData.append("venue", eventData.venue);
+      formData.append("name", eventData.name);
+      formData.append("organization", eventData.organization);
+      formData.append("date", eventData.fromDate);  // Store fromDate in 'date'
+      formData.append("datefrom", eventData.toDate);  // Store toDate in 'datefrom'
+      formData.append("duration", duration); // Use the formatted duration string
+      formData.append("document", eventData.document);
+      formData.append("poster", eventData.poster);
+  
+      try {
+        const response = await axios.post("http://localhost:5000/api/events", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+        });
+        if (response.status === 200) {
+          alert("Event added successfully!");
+          setModalOpen(false); // Close the modal after successful submission
         }
-      );
-      if (response.status === 200) {
-        alert("Event added successfully!");
-        setModalOpen(false); // Close the modal after successful submission
+      } catch (error) {
+        console.error("Error uploading the event:", error);
+        alert("Failed to add event!");
       }
-    } catch (error) {
-      console.error("Error uploading the event:", error);
-      alert("Failed to add event!");
+    } else {
+      alert("Please fill in all time fields correctly.");
     }
   };
+  
+  
+  
+  
 
   return (
     <div>
@@ -155,23 +161,8 @@ const Dashboard = () => {
       <div className={styles.container}>
         <div className={styles.firstContainer}>
           {/* Upcoming Events Section */}
-
-          <div className={styles.upcomingEventsCard}>
-            <div className={styles.upcomingEventsImageContainer}>
-              <img
-                src={images[currentSlide]} // Replace this with your event image array or dynamic image
-                alt="Upcoming Event"
-                className={styles.upcomingEventImage}
-              />
-              <div className={styles.gradientOverlay}>
-                <h2 className={styles.upcomingEventsText}>Upcoming Events</h2>
-                <p className={styles.eventDetails}>
-                  <span className={styles.eventName}>CoEng Week 2024</span> ||{" "}
-                  <span className={styles.eventDate}>November 11-15, 2024</span>
-                </p>
-              </div>
-            </div>
-          </div>
+          <Slideshow />
+       
 
           <div className={styles.calendar}>
             <h1>Campus Calendar</h1>
@@ -187,8 +178,6 @@ const Dashboard = () => {
             <div className={styles.sidebarr}>
               {[
                 "Events",
-                "Scheduled Bookings",
-                "Available Dates",
                 "Report",
               ].map((item) => (
                 <button
@@ -214,67 +203,7 @@ const Dashboard = () => {
 
         {/* News and Information Section (on the right) */}
         <div className={styles.layoutContainer}>
-          <div className={styles.leftSection}>
-            <h2 className={styles.header}>
-              <Building2 size={20} color="#063970" /> Councils and Organization
-              List
-            </h2>
-
-            {/* Councils and Organization List */}
-            <div className={styles.sidebarContainer}>
-              <div className={styles.sidebar}>
-                {/* Add your buttons here */}
-                {[
-                  "University Supreme Student Government",
-                  "COE Council",
-                  "COBA Council",
-                  "CHI Council",
-                  "COENG Council",
-                  "BEED Society",
-                  "Litera Organization",
-                  "Radicals Organization",
-                  "Kapulungan Filipino",
-                  "Social Studies Organization (UNESCO)",
-                  "Association of Stenographer Aiming for Progress (ASAP)",
-                  "Association of Junior Administrator (AJA)",
-                  "Tourism Society (TM Soc)",
-                  "Hospitality Society (HM Soc)",
-                  "Bartender’s Society (BAR Soc)",
-                  "Association of Civil Engineering Students (ACES)",
-                  "Association of Concerned Computer Engineering Students (ACCESS) ",
-                  "URSAC Extension Organization",
-                  "URSAC Fierce Group Facilitator ",
-                  "Environment Army Society",
-                  "Hiyas ng Rizal Dance Troupe",
-                  "Red Cross Youth Council",
-                  "Tanghal Tipolo",
-                  "CORO URSAC",
-                  "Christian Brotherhood International",
-                  "Elevate URSAC Chapter",
-                ].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => setNewSidebarSelection(item)}
-                    className={{
-                      ...styles.sidebarButton,
-                      backgroundColor:
-                        newSidebarSelection === item
-                          ? "#0e4296"
-                          : "transparent",
-                      color: newSidebarSelection === item ? "#fff" : "#0e4296",
-                    }}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-
-              <div className={styles.sidebarContent}>
-                <h3>{newSidebarSelection}</h3>
-                {/* Dynamic content goes here */}
-              </div>
-            </div>
-          </div>
+        <CouncilDisplayedit />
         </div>
 
         {/* Merged Vision and Mission Section */}
@@ -307,109 +236,15 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {isModalOpen && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <h3>Add Event</h3>
-              <form onSubmit={handleModalSubmit} encType="multipart/form-data">
-                <div className={styles.formGroup}>
-                  <label>Venue:</label>
-                  <select
-                    name="venue"
-                    value={eventData.venue}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                  >
-                    <option value="">Select Venue</option>
-                    <option value="Venue 1">Court</option>
-                    <option value="Venue 2">Room 101</option>
-                  </select>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Name:</label>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Event Name"
-                    value={eventData.name}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Organization:</label>
-                  <select
-                    name="organization"
-                    value={eventData.organization}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                  >
-                    <option value="">Select Organization</option>
-                    <option value="COE">COE</option>
-                    <option value="CBA">CBA</option>
-                  </select>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Date:</label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={eventData.date}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Duration:</label>
-                  <input
-                    type="text"
-                    name="duration"
-                    placeholder="Duration"
-                    value={eventData.duration}
-                    onChange={handleInputChange}
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Document:</label>
-                  <input
-                    type="file"
-                    name="document"
-                    onChange={handleFileChange}
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Poster:</label>
-                  <input
-                    type="file"
-                    name="poster"
-                    onChange={handleFileChange}
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.modalFooter}>
-                  <button type="submit" className={styles.submitButton}>
-                    Submit
-                  </button>
-                  <button
-                    onClick={() => setModalOpen(false)}
-                    className={styles.cancelButton}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+        {/* Event Modal */}
+      <EventModal 
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+        eventData={eventData}
+        handleInputChange={handleInputChange}
+        handleFileChange={handleFileChange}
+        handleModalSubmit={handleModalSubmit}
+      />
       </div>
       {/* Footer */}
       <footer className={styles.footer}>

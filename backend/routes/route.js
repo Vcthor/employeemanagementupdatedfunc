@@ -6,21 +6,21 @@ const connection = require('../connection/db');  // import the database connecti
 
 // Create a new event
 router.post('/events', (req, res) => {
-  const { name, date, time, organization, documents } = req.body;
-  const query = 'INSERT INTO events (name, date, time, organization, documents) VALUES (?, ?, ?, ?, ?)';
+  const { name, date, datefrom, time, organization, documents } = req.body;
+  const query = 'INSERT INTO events (name, date, datefrom, duration, organization, documents) VALUES (?, ?, ?, ?, ?)';
 
-  connection.query(query, [name, date, time, organization, documents], (err, results) => {
+  connection.query(query, [name, date, datefrom, time, organization, documents], (err, results) => {
     if (err) {
       return res.status(400).send(err);
     }
-    res.status(201).send({ id: results.insertId, name, date, time, organization, documents });
+    res.status(201).send({ id: results.insertId, name, date, datefrom, time, organization, documents });
   });
 });
 
 
 
 
-
+//get event
 router.get('/events', (req, res) => {
   const { date } = req.query;
   const query = `SELECT organization, venue, date, duration, name FROM events WHERE date = ?`;

@@ -5,47 +5,13 @@ import Dashboard from './Dashboard';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import styles from './Admin.module.css';
-
+import Addcouncils from './Addcouncils';
 const Admin = () => {
 
     const [showAddCouncilForm, setShowAddCouncilForm] = useState(false); // State to toggle Add Council form visibility
-    const [councilFormData, setCouncilFormData] = useState({
-        organization: '',
-        adviser: '',
-        president: '',
-        vicePresident: '',
-        secretary: '',
-        treasurer: '',
-        auditor: '',
-        pro: '',
-        rep: '',
-        representative: ''
-    });
+ 
 
-    const handleAddCouncil = async (e) => {
-        e.preventDefault();
-    
-        try {
-            const response = await fetch('http://localhost:5000/api/councils', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(councilFormData), // Sending form data as JSON
-              });
-              
-    
-          const data = await response.json();
-          if (response.ok) {
-            alert('Council data saved successfully!');
-          } else {
-            alert('Error saving council data: ' + data.message);
-          }
-        } catch (error) {
-          console.error('Error submitting form:', error);
-          alert('Error submitting form');
-        }
-      };
+  
 
       
     const [activeComponent, setActiveComponent] = useState('Dashboard');
@@ -419,107 +385,21 @@ const handleConfirm = async (eventId) => {
     </tbody>   
 </table>
                             </div>
-                            {showAddCouncilForm && (
-                                <form onSubmit={handleAddCouncil} className={styles.sectionBox}>
-                                    <div className={styles.formGroup}>
-                                        <label>Organization/Council:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.organization}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, organization: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Adviser:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.adviser}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, adviser: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>President:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.president}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, president: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Vice-President:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.vicePresident}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, vicePresident: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Secretary:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.secretary}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, secretary: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Treasurer:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.treasurer}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, treasurer: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Auditor:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.auditor}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, auditor: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>P.R.O:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.pro}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, pro: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Rep:</label>
-                                        <select
-                                            value={councilFormData.rep}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, rep: e.target.value })}
-                                            className={styles.input}
-                                        >
-                                            <option value="">Select Representative</option>
-                                            <option value="Rep1">Rep 1</option>
-                                            <option value="Rep2">Rep 2</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles.formGroup}>
-                                        <label>Representative:</label>
-                                        <input
-                                            type="text"
-                                            value={councilFormData.representative}
-                                            onChange={(e) => setCouncilFormData({ ...councilFormData, representative: e.target.value })}
-                                            className={styles.input}
-                                        />
-                                    </div>
-                                    <div className={styles.formButtons}>
-                                        <button type="submit" className={styles.submitButton}>Submit</button>
-                                        <button type="button" onClick={() => setShowAddCouncilForm(false)} className={styles.cancelButton}>Cancel</button>
-                                    </div>
-                                </form>
-                            )}
+
+
+                            <div>
+      <button onClick={() => setShowAddCouncilForm(true)}>Add Council</button>
+
+      {/* Render the AddCouncils component */}
+      <Addcouncils
+        showAddCouncilForm={showAddCouncilForm}
+        setShowAddCouncilForm={setShowAddCouncilForm}
+      />
+    </div>
+
+                               {/* Render the AddCouncils component */}
+
+                           
                         </div>
                     );
             case 'Users':

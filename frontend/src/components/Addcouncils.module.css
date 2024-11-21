@@ -1,0 +1,57 @@
+.modalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.sectionBox {
+  background-color: white;
+  padding: 40px; /* Reduced padding */
+  border-radius: 8px; /* Slightly smaller border radius */
+  width: 400px; /* Reduced width */
+  max-width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 12px; /* Reduced margin */
+}
+
+.input {
+  width: 100%;
+  padding: 8px; /* Reduced padding */
+  margin-top: 5px;
+  border-radius: 4px; /* Slightly smaller radius */
+  border: 1px solid #ccc;
+}
+
+.formButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submitButton {
+  background-color: #0e4296;
+  color: white;
+  padding: 8px 16px; /* Reduced padding */
+  border: none;
+  border-radius: 5px;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  padding: 8px 16px; /* Reduced padding */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+

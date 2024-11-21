@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/documents', express.static(path.join(__dirname, 'documents')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
+//FOR SLIDESHOW
 // Endpoint to fetch the list of images from the 'uploads' folder
 app.get('/api/slideshow-images', (req, res) => {
   const uploadsPath = path.join(__dirname, 'uploads');
@@ -30,8 +30,6 @@ app.get('/api/slideshow-images', (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Error reading uploads folder' });
     }
-
-    // Filter the files to only include image files
     const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
     res.json(imageFiles); // Send the list of image filenames to the frontend
   });
@@ -63,12 +61,12 @@ const upload = multer({ storage, fileFilter });
 
 // POST route to add an event
 app.post('/api/events', upload.fields([{ name: 'document' }, { name: 'poster' }]), (req, res) => {
-  const { venue, name, organization, date, duration } = req.body;
+  const { venue, name, organization, date, datefrom, duration } = req.body;
   const document = req.files.document ? req.files.document[0].filename : null;
   const poster = req.files.poster ? req.files.poster[0].filename : null;
 
-  const query = 'INSERT INTO events (name, organization, date, duration, documents, photo, venue) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  connection.query(query, [name, organization, date, duration, document, poster, venue], (err, results) => {
+  const query = 'INSERT INTO events (name, organization, date, datefrom, duration, documents, photo, venue) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
+  connection.query(query, [name, organization, date, datefrom, duration, document, poster, venue], (err, results) => {
     if (err) {
       console.error('Error inserting data:', err);
       return res.status(500).json({ message: 'Error inserting event data' });
@@ -176,20 +174,7 @@ connection.connect(err => {
   console.log('Connected to the database');
 });
 
-// Example route to fetch images
-app.get('/api/images', (req, res) => {
-  const fs = require('fs');
-  const uploadDir = path.join(__dirname, 'uploads');
 
-  // Read the directory and send back the list of image URLs
-  fs.readdir(uploadDir, (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: 'Failed to load images' });
-    }
-    const images = files.map(file => `http://localhost:5000/uploads/${file}`);
-    res.json(images);
-  });
-});
 
 
 
@@ -210,10 +195,13 @@ app.get('/api/approved', (req, res) => {
       res.json(results); // Return all approved events
     });
   } else {
-    // Fetch events for the specific date
+    // Convert the provided date to YYYY-MM-DD format for comparison
+    const formattedDate = new Date(date).toISOString().split("T")[0];
+    
+    // Fetch events for the specific date range
     connection.query(
-      'SELECT * FROM approved WHERE DATE(date) = ?',
-      [date],
+      'SELECT * FROM approved WHERE DATE(date) <= ? AND DATE(datefrom) >= ?',
+      [formattedDate, formattedDate],
       (err, results) => {
         if (err) {
           console.error("Error querying database:", err);
@@ -264,37 +252,86 @@ app.delete('/api/events/:id', (req, res) => {
 
 
 
-// aprrovving daterow and moving to tables
+// aprrovving daterow and moving to tables AND renaming Photos
+
+// Approve the event and move it to the approved table
+// Function to find the next available event image name
+const getNextEventImageName = (uploadsDir) => {
+  let eventNumber = 1;
+  let eventImageName = `event${eventNumber}.jpg`;
+  let eventImagePath = path.join(uploadsDir, eventImageName);
+
+  // Check if the file already exists, and increment the number until an available name is found
+  while (fs.existsSync(eventImagePath)) {
+    eventNumber++;
+    eventImageName = `event${eventNumber}.jpg`;
+    eventImagePath = path.join(uploadsDir, eventImageName);
+  }
+
+  return eventImageName;
+};
 
 app.post('/api/events/approve/:id', (req, res) => {
   const { id } = req.params;
   console.log(`Received request to approve event with ID: ${id}`); // Log received ID
 
-  // Step 1: Move the row from events to approved
-  const insertQuery = `
-    INSERT INTO approved (id, name, organization, date, duration, documents, photo, venue)
-    SELECT id, name, organization, date, duration, documents, photo, venue
-    FROM events
-    WHERE id = ?;
-  `;
-
-  const deleteQuery = 'DELETE FROM events WHERE id = ?';
-
-  connection.query(insertQuery, [id], (err, result) => {
+  const query = 'SELECT * FROM events WHERE id = ?';
+  connection.query(query, [id], (err, results) => {
     if (err) {
-      console.error('Error approving event:', err);
-      return res.status(500).json({ message: 'Error approving event', error: err });
+      console.error('Error fetching event:', err);
+      return res.status(500).json({ message: 'Error fetching event', error: err });
     }
 
-    if (result.affectedRows > 0) {
-      // Step 2: Delete the row from the original table
-      connection.query(deleteQuery, [id], (err, deleteResult) => {
+    if (results.length > 0) {
+      const event = results[0];
+      const uploadsDir = path.join(__dirname, 'uploads');
+      
+      // Get the next available image name
+      const newImageName = getNextEventImageName(uploadsDir);
+      const oldImagePath = path.join(uploadsDir, event.photo);
+      const newImagePath = path.join(uploadsDir, newImageName);
+
+      // Check if the old file exists
+      fs.access(oldImagePath, fs.constants.F_OK, (err) => {
         if (err) {
-          console.error('Error deleting event after approval:', err);
-          return res.status(500).json({ message: 'Error cleaning up original event', error: err });
+          console.error('File not found:', oldImagePath);
+          return res.status(404).json({ message: 'File not found for renaming' });
         }
 
-        res.status(200).json({ message: 'Event approved successfully!' });
+        // Rename the file
+        fs.rename(oldImagePath, newImagePath, (err) => {
+          if (err) {
+            console.error('Error renaming file:', err);
+            return res.status(500).json({ message: 'Error renaming file', error: err });
+          }
+
+          console.log(`File renamed successfully to ${newImageName}`);
+
+          // Continue with the rest of the process (approving the event)
+          const insertQuery = `
+            INSERT INTO approved (id, name, organization, date, datefrom, duration, documents, photo, venue)
+            SELECT id, name, organization, date, datefrom, duration, ?, ?, venue
+            FROM events
+            WHERE id = ?;
+          `;
+
+          connection.query(insertQuery, [newImageName, newImageName, id], (err, result) => {
+            if (err) {
+              console.error('Error approving event:', err);
+              return res.status(500).json({ message: 'Error approving event', error: err });
+            }
+
+            const deleteQuery = 'DELETE FROM events WHERE id = ?';
+            connection.query(deleteQuery, [id], (err, deleteResult) => {
+              if (err) {
+                console.error('Error deleting event after approval:', err);
+                return res.status(500).json({ message: 'Error cleaning up original event', error: err });
+              }
+
+              res.status(200).json({ message: 'Event approved successfully!' });
+            });
+          });
+        });
       });
     } else {
       res.status(404).json({ message: 'Event not found' });
@@ -308,13 +345,57 @@ app.post('/api/events/approve/:id', (req, res) => {
 
 
 
+//COUNCILSS SLIDEBAR SELECTION and display
+app.get('/api/councils', (req, res) => {
+  connection.query('SELECT * FROM councils', (err, results) => {
+    if (err) {
+      console.error('Error querying database:', err);
+      return res.status(500).json({ message: 'Database query error' });
+    }
+    res.json(results); // Send all council details to the frontend
+  });
+});
 
 
+//edit council on council display 
+// Update council details endpoint
+app.put('/api/councils/:id', (req, res) => {
+  const councilId = req.params.id; // ID from the URL
+  const { adviser, president, vicePresident, secretary, treasurer, auditor, pro, rep, representative } = req.body;
+
+  // Ensure created_at is never included
+  const updateQuery = `
+    UPDATE councils
+    SET adviser = ?, 
+        president = ?, 
+        vicePresident = ?, 
+        secretary = ?, 
+        treasurer = ?, 
+        auditor = ?, 
+        pro = ?, 
+        rep = ?, 
+        representative = ? 
+    WHERE id = ?
+  `;
+
+  const values = [adviser, president, vicePresident, secretary, treasurer, auditor, pro, rep, representative, councilId];
+
+  connection.query(updateQuery, values, (err, result) => {
+    if (err) {
+      console.error('Error updating council details:', err);
+      return res.status(500).json({ error: 'An error occurred while updating council details' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Council not found' });
+    }
+    res.status(200).json({ message: 'Council updated successfully' });
+  });
+});
+
+  
 
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
-

@@ -31,7 +31,10 @@ const CustomCalendar = () => {
     const formattedDate = date.toISOString().split("T")[0];
     const matchedEvents = allEvents.filter((event) => {
       const eventDate = new Date(event.date).toISOString().split("T")[0];
-      return eventDate === formattedDate;
+      const eventDateFrom = new Date(event.datefrom).toISOString().split("T")[0];
+      return (
+        eventDate <= formattedDate && eventDateFrom >= formattedDate
+      );
     });
 
     setFilteredEvents(matchedEvents); // Update filtered events
@@ -71,7 +74,8 @@ const CustomCalendar = () => {
     const formattedDate = date.toISOString().split("T")[0];
     return allEvents.some((event) => {
       const eventDate = new Date(event.date).toISOString().split("T")[0];
-      return eventDate === formattedDate;
+      const eventDateFrom = new Date(event.datefrom).toISOString().split("T")[0];
+      return eventDate <= formattedDate && eventDateFrom >= formattedDate;
     });
   };
 
