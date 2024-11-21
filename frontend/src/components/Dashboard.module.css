@@ -1,0 +1,486 @@
+/* General container styles */
+.container {
+    background-color: #f9f9f9;
+    padding: 48px 96px;
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 96px;
+    background-color: #063970;
+    color: #fff;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+}
+
+.titleflex {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+}
+
+.title {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+}
+
+.subtitle {
+    margin-top: -8px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+}
+
+.loginIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.logoutButton {
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #063970;
+    border: none;
+    gap: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Content area */
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.firstContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping for smaller screens */
+    gap: 36px;
+    /* Reduced gap for smaller screens */
+    justify-content: space-between;
+    /* Space out items */
+}
+
+.upcomingEventsCard {
+    position: relative;
+    height: auto;
+    max-height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    /* Allow it to take remaining space */
+    max-width: 100%;
+    /* Full width on small screens */
+    min-width: 300px;
+    /* Ensure it doesn’t shrink too much */
+}
+
+.upcomingEventImage {
+    width: 100%;
+    /* Full width of container */
+    height: 100%;
+    /* Full height of container */
+    object-fit: cover;
+    /* Ensure the image fills the container and maintains aspect ratio */
+    object-position: center;
+    /* Center the image in the container */
+    display: block;
+    /* Avoid inline gaps */
+    border-radius: 16px;
+    /* Maintain rounded corners */
+}
+
+.gradientOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 36px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.upcomingEventsText {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.eventDetails {
+    font-size: 16px;
+}
+
+
+.editButton {
+    float: right; /* Places the button on the right side */
+    margin-right: 10px; /* Adds some spacing on the right */
+    padding: 10px 15px; /* Adjusts the button's padding */
+    background-color: #0e4296; /* Example background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .editButton:hover {
+    background-color: #0c387d; /* Darken the button on hover */
+  }
+
+
+/* Slideshow styles */
+/* .slideshow {
+    width: 60%;
+    text-align: center;
+}
+
+.slideshowContainer {
+    position: relative;
+}
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.slideshowImage {
+    width: 100%;
+    height: auto;
+} */
+
+/* Calendar styles */
+/* .calendar {
+    width: 35%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} */
+
+/* Venue booklist container */
+.venueBooklistContainer {
+    background-color: white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 48px;
+}
+
+.sidebarrContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.sidebarr {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    gap: 4px;
+}
+
+.sidebarr button {
+    padding: 16px 8px;
+    border-radius: 0px;
+    border: none;
+    cursor: pointer;
+    background-color: #0e4296;
+    color: white;
+    transition: 0.15s;
+    border-radius: 8px;
+}
+
+.sidebarr button:hover {
+    background-color: #0e4296bc;
+
+}
+
+.header {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.newSidebarContainer {
+    padding: 20px;
+}
+
+.addEventButton {
+    background-color: #0e4296;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.addEventButton:hover {
+    background-color: #0e4296bc;
+}
+
+/* VMGO */
+.mergedSection {
+    background-color: white;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 16px;
+    padding: 64px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vgmoHeader {
+    color: #154c79;
+    margin-bottom: 8px;
+}
+
+.layoutContainer {
+    margin-top: 48px;
+    display: block;
+    gap: 36px;
+    width: 100%;
+}
+
+.leftSection {
+    background-color: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    color: #154c79;
+}
+
+.sidebarContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    gap: 4px;
+}
+
+.sidebar button {
+    padding: 16px 8px;
+    border-radius: 0px;
+    border: none;
+    cursor: pointer;
+    background-color: #0e4296;
+    color: white;
+    transition: 0.15s;
+    border-radius: 8px;
+}
+
+.sidebar button:hover {
+    background-color: #0e4296bc;
+
+}
+
+.vgmo:not(:last-child) {
+    margin-bottom: 32px;
+}
+
+/* Modal overlay */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+}
+
+/* Form group styles */
+.formGroup {
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Modal footer */
+.modalFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitButton {
+    background-color: #0e4296;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background-color: #ccc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #063970;
+    color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.timeGroup {
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+  }
+  
+  .timeInput {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  label {
+    font-size: 16px;
+  }
+  
+  span {
+    margin: 0 10px;
+  }
+
+  .timeFromGroup, .timeToGroup {
+    display: flex;
+    gap: 10px; /* Space between the selects */
+  }
+  
+  .timeFromGroup select, .timeToGroup select {
+    flex: 1; /* Make the select elements take equal width */
+  }
+
+
+  /* styles.module.css */
+
+/* Modal backdrop */
+.modalWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark background overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensures it's above other content */
+  }
+  
+  /* Modal content styling */
+  .modalContent {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 350px; /* Reduced width */
+    max-width: 90%;
+    height: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Form styling */
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Form group styling */
+  .formGroup {
+    margin-bottom: 8px;
+  }
+  
+  .input {
+    padding: 5px;
+    margin-top: 1px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+
+  
+  /* Buttons styling */
+  .formButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .submitButton, .cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitButton {
+    background-color: #0e4296;
+    color: white;
+  }
+  
+  .cancelButton {
+    background-color: #e0e0e0;
+  }
+  
+  .submitButton:hover {
+    background-color: #0c387d;
+  }
+  
+  .cancelButton:hover {
+    background-color: #c1c1c1;
+  }
+  
